@@ -69,8 +69,6 @@ def automate(test):
     sniff_thread.start()
     attack(attackType=test)
     print("Attack finished")
-    # close the async capture
-    # wait for the sniffing thread to finish
     sleep(1)
     sniff_thread.join()
     capture.close()
