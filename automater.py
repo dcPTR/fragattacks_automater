@@ -64,8 +64,6 @@ def automate(test):
     capture = pyshark.LiveCapture(interface="wlp0s20f3", output_file=file)
     print("Starting capture")
 
-    # start sniffing packets in a separate thread
-    # then start the attack
     print(f"Starting attack {test}")
     sniff_thread = threading.Thread(target=sniff, args=(capture,), daemon=True)
     sniff_thread.start()
