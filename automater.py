@@ -6,7 +6,7 @@ from time import sleep
 import pyshark as pyshark
 from colorama import Fore, Style
 
-research_dir = "/home/ubuntu/fragattacks/research"
+research_dir = "/home/dev/fragattacks/research"
 iface = "wlp0s20f3"
 
 tests = {
