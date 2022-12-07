@@ -6,7 +6,7 @@ from time import sleep
 import pyshark as pyshark
 from colorama import Fore, Style
 
-research_dir = "/home/dev/fragattacks/research"
+research_dir = "/home/ubuntu/fragattacks/research"
 iface = "wlp0s20f3"
 
 tests = {
@@ -49,8 +49,8 @@ tests = {
 }
 
 
-def attack(interface="wlp0s20f3", attackType="ping"):
-    command = f"/{research_dir}/fragattack.py {interface} {attackType}"
+def attack(attackType="ping", interface="wlp0s20f3"):
+    command = f"{research_dir}/fragattack.py {interface} {attackType}"
     # os.system(command)
     log = os.popen(command).read()
     if ">>> TEST COMPLETED SUCCESSFULLY" in log:
@@ -75,7 +75,7 @@ def automate(testName, interface="wlp0s20f3"):
           f"on interface {Fore.YELLOW}{interface}{Style.RESET_ALL}")
     sniff_thread = threading.Thread(target=sniff, args=(capture,), daemon=True)
     sniff_thread.start()
-    results = attack(attackType=testName)
+    results = attack(attackType=testName, interface=interface)
     if results:
         print(f"{Fore.GREEN}Attack {testName} was successful")
     else:
@@ -101,7 +101,7 @@ def initialize():
 
 initialize()
 for test in tests:
-    automate(test, iface)
+    automate(test, interface=iface)
 
 print(f"\n{Fore.CYAN}All tests finished")
 print("********\n" * 3)
