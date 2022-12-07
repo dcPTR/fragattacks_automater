@@ -1,4 +1,5 @@
 import os
+import sys
 import threading
 from time import sleep
 
@@ -6,6 +7,7 @@ import pyshark as pyshark
 from colorama import Fore, Style
 
 research_dir = "/home/dev/fragattacks/research"
+iface = "wlp0s20f3"
 
 tests = {
     # Sanity checks
@@ -92,11 +94,14 @@ def initialize():
         exit(1)
     if not os.path.exists(f"{research_dir}/captures"):
         os.mkdir(f"{research_dir}/captures")
+    if len(sys.argv) > 1:
+        global iface
+        iface = sys.argv[1]
 
 
 initialize()
 for test in tests:
-    automate(test)
+    automate(test, iface)
 
 print(f"\n{Fore.CYAN}All tests finished")
 print("********\n" * 3)
