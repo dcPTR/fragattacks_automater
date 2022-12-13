@@ -3,7 +3,7 @@
 1. Pobierz skrypt i skopiuj go do podkatalogu research w katalogu fragattacks.
 2. W skrypcie zmien sciezke do katalogu research (komenda `pwd` wyświetla ścieżkę) oraz nazwę interfejsu (komenda `iwconfig`)
 3. Przejdz w tryb uprziwilejowany (root) komenda `sudo su`
-4. Teraz uruchom srodowisko wirtualne: source venv/bin/activate
+4. Teraz uruchom środowisko wirtualne: `source venv/bin/activate`
 5. (KROK JEDNORAZOWY) Pobierz pyshark komendą: 
 ```sh
 pip3 install pyshark && pip3 install colorama
