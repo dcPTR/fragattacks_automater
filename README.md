@@ -5,11 +5,10 @@
 3. Przejdz w tryb uprziwilejowany (root) komenda sudo su
 4. Teraz uruchom srodowisko wirtualne: source venv/bin/activate
 5. (KROK JEDNORAZOWY) Pobierz pyshark komenda: pip3 install pyshark && pip3 install colorama
-6. Uruchom automater: python3 automater.py 
+6. Uruchom automater: python3 automater.py
 Opcjonalnie podaj interfejs sieciowy
 Pzykład:
 python3 automater.py wlan0
-
 
 Jak edytowac diagram:
 1. Pobieramy diagram.vpd z repozytorium.
