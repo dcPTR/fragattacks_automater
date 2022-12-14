@@ -14,7 +14,11 @@ python3 automater.py
 ```
 Opcjonalnie podaj interfejs sieciowy:
 ```py
-python3 automater.py wlan0
+python3 automater.py --iface wlan0
+```
+Opcjonalnie wylacz przechwytywanie pakietow:
+```py
+python3 automater.py --no-capture
 ```
 
 Jak edytowac diagram:
