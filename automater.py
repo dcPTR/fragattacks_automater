@@ -6,8 +6,9 @@ from time import sleep
 import pyshark as pyshark
 from colorama import Fore, Style
 
-research_dir = "/home/dev/fragattacks/research"
+research_dir = os.getcwd()
 iface = "wlp0s20f3"
+should_capture = True
 
 tests = {
     # Sanity checks
@@ -66,26 +67,28 @@ def sniff(capture):
 
 
 def automate(testName, interface="wlp0s20f3"):
-    file = f"{research_dir}/captures/capture_{test}.pcap"
-    output = open(file, "w")
+    if should_capture:
+        file = f"{research_dir}/captures/capture_{test}.pcap"
+        output = open(file, "w")
+        capture = pyshark.LiveCapture(interface=interface, output_file=file)
+        print(f"Starting capture on {Fore.YELLOW}{interface}{Style.RESET_ALL}...")
+        sniff_thread = threading.Thread(target=sniff, args=(capture,), daemon=True)
+        sniff_thread.start()
 
-    capture = pyshark.LiveCapture(interface=interface, output_file=file)
-    print(f"Starting capture on {Fore.YELLOW}{interface}{Style.RESET_ALL}...")
     print(f"Starting attack {Fore.YELLOW}{testName}{Style.RESET_ALL} "
           f"on interface {Fore.YELLOW}{interface}{Style.RESET_ALL}")
-    sniff_thread = threading.Thread(target=sniff, args=(capture,), daemon=True)
-    sniff_thread.start()
+
     results = attack(attackType=testName, interface=interface)
     if results:
         print(f"{Fore.GREEN}Attack {testName} was successful")
     else:
         print(f"{Fore.LIGHTRED_EX}Attack {testName} failed")
     print(Style.RESET_ALL, end="")
-    sleep(1)
-    sniff_thread.join()
-    capture.close()
-    print(f"Capture finished\n")
-    output.close()
+    if should_capture:
+        sniff_thread.join()
+        capture.close()
+        print(f"Capture finished\n")
+        output.close()
 
 
 def initialize():
@@ -94,10 +97,13 @@ def initialize():
         exit(1)
     if not os.path.exists(f"{research_dir}/captures"):
         os.mkdir(f"{research_dir}/captures")
-    if len(sys.argv) > 1:
+    if "--no-capture" in sys.argv:
+        global should_capture
+        should_capture = False
+        print("Not capturing packets")
+    if "--iface" in sys.argv:
         global iface
-        iface = sys.argv[1]
-
+        iface = sys.argv[sys.argv.index("--iface") + 1]
 
 initialize()
 for test in tests:
