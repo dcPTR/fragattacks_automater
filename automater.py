@@ -12,41 +12,40 @@ should_capture = True
 
 tests = {
     # Sanity checks
-    "ping": False,
-    "ping I,E,E": False,
+    "ping": ("sc1", False),
+    "ping I,E,E": ("sc2", False),
     # Basic device behaviour
-    "ping I,E,E --delay 1": False,
-    "ping-frag-sep": False,
-    "ping-frag-sep --pn-per-qos": False,
+    "ping I,E,E --delay 1": ("bdb1", False),
+    "ping-frag-sep": ("bdb2", False),
+    "ping-frag-sep --pn-per-qos": ("bdb3", False),
     # A-MSDU attacks
-    "ping I,E --amsdu": False,
-    "amsdu-inject": False,
-    "amsdu-inject-bad": False,
+    "ping I,E --amsdu": ("amsdu1", False),
+    "amsdu-inject": ("amsdu2", False),
+    "amsdu-inject-bad": ("amsdu3", False),
     # Mixed key attacks (nie dzialaja jak na razie)
-    # "ping I,F,BE,AE": False,
-    # "ping I,F,BE,AE --pn-per-qos": False,
+    #"ping I,F,BE,AE": ("mk1", False),
+    #"ping I,F,BE,AE --pn-per-qos": ("mk2", False),
     # Cache attacks
-    "ping I,E,R,AE": False,
-    "ping I,E,R,E": False,
-    "ping I,E,R,AE --full-recon": False,
-    "ping I,E,R,E --full-recon": False,
+    "ping I,E,R,AE": ("ca1", False),
+    "ping I,E,R,E": ("ca2", False),
+    "ping I,E,R,AE --full-recon": ("ca3", False),
+    "ping I,E,R,E --full-recon": ("ca4", False),
     # Non-consecutive PNs attack
-    "ping I,E,E --inc-pn 2": False,
+    "ping I,E,E --inc-pn 2": ("ncpn1", False),
     # Mixed plain/encrypt attack
-    "ping I,E,P": False,
-    "ping I,P,E": False,
-    "ping I,P": False,
-    "ping I,P,P": False,
-    "linux-plain": False,
+    "ping I,E,P": ("mpe1", False),
+    "ping I,P,E": ("mpe2", False),
+    "ping I,P": ("mpe3", False),
+    "ping I,P,P": ("mpe4", False),
+    "linux-plain": ("mpe5", False),
     # Broadcast fragment attack
-    "ping I,D,P --bcast-ra": False,
-    "ping D,BP --bcast-ra": False,
+    "ping I,D,P --bcast-ra": ("bfa1", False),
+    "ping D,BP --bcast-ra": ("bfa2", False),
     # A-MSDU EAPOL attack
-    "eapol-amsdu I,P": False,
-    "eapol-amsdu BP": False,
-    "eapol-amsdu-bad I,P": False,
-    "eapol-amsdu-bad BP": False,
-
+    "eapol-amsdu I,P": ("eapol1", False),
+    "eapol-amsdu BP": ("eapol2", False),
+    "eapol-amsdu-bad I,P": ("eapol3", False),
+    "eapol-amsdu-bad BP": ("eapol4", False),
 }
 
 
@@ -55,7 +54,7 @@ def attack(attackType="ping", interface="wlp0s20f3"):
     # os.system(command)
     log = os.popen(command).read()
     if ">>> TEST COMPLETED SUCCESSFULLY" in log:
-        tests[attackType] = True
+        tests[attackType][1] = True
         return True
     return False
 
@@ -114,10 +113,10 @@ print("********\n" * 3)
 print(f"{Fore.GREEN}Successful tests:")
 maxLength = max([len(test) for test in tests])
 for test in tests:
-    if tests[test]:
-        print(f"{Fore.GREEN}{test}:{' ' * (maxLength + 1 - len(test))}{tests[test]}{Style.RESET_ALL}")
+    if tests[test][1]:
+        print(f"{Fore.GREEN}{test}:{' ' * (maxLength + 1 - len(test))}{tests[test][1]}{Style.RESET_ALL}")
 
 print(f"\n{Fore.RED}Failed tests:")
 for test in tests:
-    if not tests[test]:
-        print(f"{Fore.RED}{test}:{' ' * (maxLength + 1 - len(test))}{tests[test]}{Style.RESET_ALL}")
+    if not tests[test][1]:
+        print(f"{Fore.RED}{test}:{' ' * (maxLength + 1 - len(test))}{tests[test][1]}{Style.RESET_ALL}")
