@@ -1,5 +1,6 @@
 import pyodbc
 
+from TestResult import TestResult
 from TestsFileImporter import TestsFileImporter
 
 
@@ -19,7 +20,7 @@ class DatabaseResultContainer:
             self.test_results.append(row[i])
 
         for i in range(len(self.test_names)):
-            self.tests_names_and_results.append((self.test_names[i], self.test_results[i]))
+            self.tests_names_and_results.append(TestResult(name=self.test_names[i], result=self.test_results[i], alias=None, type=None))
 
     def get_test_results(self):
         return self.test_results

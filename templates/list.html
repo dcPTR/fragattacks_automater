@@ -10,10 +10,10 @@
     {% for test in tests %}
         <p>Test ID: {{test.test_id }}</p>
         {% for result in test.tests_names_and_results %}
-            {% if result[1] %}
-                <p>{{result[0]}} ✔️</p>
+            {% if result.result %}
+                <p>{{result.name}} ✔️</p>
             {% else %}
-                <p>{{result[0]}} ❌ </p>
+                <p>{{result.name}} ❌ </p>
             {% endif %}
         {% endfor %}
     {% endfor %}
