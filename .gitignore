@@ -1,3 +1,19 @@
 
 tshark.py
 new_db.py
+__pycache__/tshark.cpython-38.pyc
+__pycache__/TestsFileImporter.cpython-39.pyc
+__pycache__/TestResultsContainer.cpython-39.pyc
+__pycache__/TestResult.cpython-39.pyc
+__pycache__/Device.cpython-39.pyc
+__pycache__/DatabaseResultContainer.cpython-39.pyc
+__pycache__/DatabaseAccess.cpython-39.pyc
+.idea/vcs.xml
+.idea/sqldialects.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/discord.xml
+.idea/dataSources.xml
+.idea/automateFragAttacks.iml

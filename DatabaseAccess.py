@@ -3,6 +3,7 @@ import string
 
 import pyodbc
 
+from DatabaseResultContainer import DatabaseResultContainer
 from Device import Device
 from TestResultsContainer import TestResultsContainer
 
@@ -49,7 +50,8 @@ class DatabaseAccess:
 
     def export_device(self, device: Device):
         self.cursor.execute(
-            f"INSERT INTO devices (name, description, software_version) VALUES ('{device.get_name()}', '{device.get_description()}', '{device.get_software_version()}')")
+            f"INSERT INTO devices (name, description, software_version) VALUES ('{device.get_name()}', "
+            f"'{device.get_description()}', '{device.get_software_version()}')")
         self.conn.commit()
         print("Device exported successfully")
 
@@ -65,3 +67,10 @@ class DatabaseAccess:
     def close_connection(self):
         self.conn.close()
         print("Connection closed")
+
+    def import_test_results(self):
+        dbcs = []
+        self.cursor.execute("SELECT * FROM test_results")
+        for row in self.cursor:
+            dbcs.append(DatabaseResultContainer(row))
+        return dbcs

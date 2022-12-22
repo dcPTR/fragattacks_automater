@@ -6,6 +6,7 @@ class TestsFileImporter:
         self.group = None
         self.tests_file = tests_file
         self.test_results = []
+        self.test_names = []
         self.import_tests()
 
     def import_tests(self):
@@ -21,12 +22,16 @@ class TestsFileImporter:
                 else:
                     if "DO NOT USE" not in line and self.group is not None:
                         test_name = line.split('",')[0].replace('"', '').strip()
+                        self.test_names.append(test_name)
                         test_alias = line.split('",')[1].replace('"', '').strip()
                         test_result = TestResult(test_name, test_alias, self.group)
                         self.test_results.append(test_result)
 
     def get_test_results(self):
         return self.test_results
+
+    def get_test_names(self):
+        return self.test_names
 
 # trc = TestResultsContainer(TestsFileImporter().get_test_results())
 # tests = trc.get_test_results_from_group("mixed_key_attacks")

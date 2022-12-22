@@ -46,6 +46,7 @@ trc = TestResultsContainer(TestsFileImporter().get_test_results())
 db = DatabaseAccess()
 db.create_database()
 db.export_test_results(trc)
+print(db.import_test_results())
 db.print_test_results()
 
 device = Device("test name", "test description", "1.0.0")

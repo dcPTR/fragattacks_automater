@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="results">
+    <h1>All test results</h1>
+    {% for test in tests %}
+        <p>Test ID: {{test.test_id }}</p>
+        {% for result in test.tests_names_and_results %}
+            {% if result[1] %}
+                <p>{{result[0]}} ✔️</p>
+            {% else %}
+                <p>{{result[0]}} ❌ </p>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>
+</body>
+</html>
