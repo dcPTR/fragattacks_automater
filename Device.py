@@ -16,5 +16,8 @@ class Device:
     def get_software_version(self):
         return self.software_version
 
+    def get_json(self):
+        return {"device": {"name": self.name, "description": self.description, "version": self.software_version}}
+
     def __str__(self):
-        return f"{self.name}, {self.description}, {self.software_version}"
+        return f'"device":{{"name":"{self.name}","description":"{self.description}","version":"{self.software_version}"}}'

@@ -2,7 +2,7 @@ import string
 
 
 class TestResult:
-    def __init__(self, name: string, alias: string, type: string, result=False):
+    def __init__(self, name: string, alias: string = None, type: string = None, result=False):
         self.name = name
         self.alias = alias
         self.type = type

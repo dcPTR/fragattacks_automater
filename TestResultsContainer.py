@@ -117,3 +117,9 @@ class TestResultsContainer:
 
     def get_test_results_as_bit_string(self):
         return ", ".join([str(int(test_result.get_result())) for test_result in self.test_results])
+
+    def get_json(self):
+        json = {"tests": []}
+        for test_result in self.test_results:
+            json["tests"].append([test_result.get_name(), str(test_result.get_result()).lower()])
+        return json
