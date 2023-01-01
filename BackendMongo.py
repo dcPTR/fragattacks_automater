@@ -86,6 +86,21 @@ def get_devices():
     )
     return response
 
+@app.route('/interfaces/' , methods=["GET"])
+def interfaces():
+    return '{"interfaces":["interfaceA","interfaceB"]}' #todo
+
+
+@app.route('/testing/', methods=["POST"])
+def tests():
+    data = request.form
+    print(data) #todo start tests
+    response = app.response_class(
+        response='{"error":"not implemented"}',
+        status=404,
+        mimetype='application/json'
+    )
+    return response
 
 if __name__ == '__main__':
     app.run()
