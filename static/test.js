@@ -8,16 +8,15 @@ function createOption(value)
 
 function loadInterfacesCallback(result, code)
 {
-    result = JSON.stringify(result);
     if(code === "success")
     {
         var interfaces = result
         var interfaceSelect = $("#network-interface")
         interfaceSelect.html("")
-        interfaceSelect.append(createOption("none"))
         interfaces.interfaces.forEach(interface => {
             interfaceSelect.append(createOption(interface))
         });
+        interfaceSelect.append(createOption("none"))
         
     }
     else{
