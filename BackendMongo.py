@@ -11,11 +11,17 @@ app = Flask(__name__)
 
 
 @app.route('/')
+@app.route('index.html')
 def index():
+    return render_template('index.html')
+
+@app.route('/test')
+@app.route('/test.html')
+def testPage():
     return render_template('test.html')
 
-
 @app.route("/list", methods=["GET"])
+@app.route("/list.html", methods=["GET"])
 def list_tests():
     return render_template('list.html')
 

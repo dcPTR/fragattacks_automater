@@ -26,7 +26,7 @@ function loadInterfacesCallback(result, code)
 
 function loadInterfaces()
 {
-    const interfaceURL = "http://127.0.0.1:5000/interfaces/"
+    const interfaceURL = "/interfaces/"
 
     if(interfaceURL === "debug")
     {
@@ -83,7 +83,7 @@ function submitTestRequest(event)
 {
     event.preventDefault();
 
-    sumissionURL = "http://127.0.0.1:5000/testing"
+    sumissionURL = "/testing"
     
     var dao = createTestSubmissionDaoFromForm()
     console.log(dao)

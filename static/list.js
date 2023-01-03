@@ -131,16 +131,9 @@ function testListApiCallback(result, code)
     result = JSON.stringify(result);
     if(code === "success")
     {
-        try{
-            currentDeviceListObject = JSON.parse(result);
-            findtestVersions()
-            $("#test-version-form-container").removeClass("d-none")
-        }
-        catch( error )
-        {
-            displayDeviceError("Couldn't parse the server response. " + error)
-            return
-        }
+        currentDeviceListObject = result;
+        findtestVersions()
+        $("#test-version-form-container").removeClass("d-none")
     }
     else
     {
@@ -150,17 +143,17 @@ function testListApiCallback(result, code)
 
 function callTestListApi(deviceName)
 {
-    const apiurl = "http://127.0.0.1:5000/devices/"; //put real api endpoint url here
+    const apiurl = "/devices/";
 
     if(deviceName === "test_debug_device")
     {
-        testJson = '[{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},"tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}]';
+        testJson = JSON.parse('[{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},"tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}]');
         testListApiCallback(testJson, "success");
     }
     else if(deviceName === "test_debug_device2")
     {
-        testJson = '[{"device":{"name":"Test Device2","description":"Test Description","version":"1.23.486_test"},"tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]},\
-        {"device":{"name":"Test Device2","description":"Test Description","version":"1.24.489_test"},"tests":[["testsucccess","false"],["testfail","false"],["testunknown","true"]]}]';
+        testJson = JSON.parse('[{"device":{"name":"Test Device2","description":"Test Description","version":"1.23.486_test"},"tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]},\
+        {"device":{"name":"Test Device2","description":"Test Description","version":"1.24.489_test"},"tests":[["testsucccess","false"],["testfail","false"],["testunknown","true"]]}]');
         testListApiCallback(testJson, "success");
     }
     else
@@ -225,7 +218,7 @@ function findDeviceAutocompleteListCallback(result, code)
 
 function findDeviceAutocompleteList()
 {
-    const deviceListURL = "http://127.0.0.1:5000/devices/" //fill with proper url
+    const deviceListURL = "/devices/" //fill with proper url
 
     if(deviceListURL == "debug")
     {
