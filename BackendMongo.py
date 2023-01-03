@@ -72,13 +72,27 @@ def test(interface, test_group):
 
 @app.route("/devices/", methods=["GET"])
 def get_devices():
+    print("get devices")
     db = MongoDatabase()
     add_dev(db)
     cursor = db.get_all_data()
-    output = []
+    devices = []
     for document in cursor:
-        output.append({key: value for key, value in document.items() if key == "device"})
+        devices.append({key: value for key, value in document.items() if key == "device"})
+
+    # for all device in devices
+    # output should be like this: '{"devices":["test_debug_device","test_debug_device2"]}')
+    # use for loop to get all devices
+    output = '{"devices":['
+    for device in devices:
+        output += f'"{device["device"]["name"]}",'
+    output = output[:-1]
+    output += ']}'
+    print("Output: " + output)
+
     response_text = f"{output}".replace("'", '"')
+    print("Response text: " + response_text)
+
     response = app.response_class(
         response=response_text,
         status=200,
@@ -86,6 +100,22 @@ def get_devices():
     )
     return response
 
+
+@app.route('/interfaces/' , methods=["GET"])
+def interfaces():
+    return '{"interfaces":["interfaceA","interfaceB"]}' #todo
+
+
+@app.route('/testing/', methods=["POST"])
+def tests():
+    data = request.form
+    print(data) #todo start tests
+    response = app.response_class(
+        response='{"error":"not implemented"}',
+        status=404,
+        mimetype='application/json'
+    )
+    return response
 
 if __name__ == '__main__':
     app.run()
