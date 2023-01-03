@@ -108,11 +108,11 @@ function displayTestList(version)
 
         row.find(".test-name-cell").html(name);
         row.find(".test-result-cell").html(testResult);
-        if(testResult == "true")
+        if(testResult === "true")
         {
             row.addClass("table-success")
         }
-        else if(testResult == "false")
+        else if(testResult === "false")
         {
             row.addClass("table-danger")
         }
@@ -128,7 +128,8 @@ function displayTestList(version)
 
 function testListApiCallback(result, code)
 {
-    if(code = "success")
+    result = JSON.stringify(result);
+    if(code === "success")
     {
         try{
             currentDeviceListObject = JSON.parse(result);
@@ -149,7 +150,7 @@ function testListApiCallback(result, code)
 
 function callTestListApi(deviceName)
 {
-    const apiurl = "https://jsonplaceholder.typicode.com/todos/1/"; //put real api endpoint url here
+    const apiurl = "http://127.0.0.1:5000/devices/"; //put real api endpoint url here
 
     if(deviceName === "test_debug_device")
     {
@@ -200,7 +201,8 @@ function submitDeviceTestSearch(event)
 
 function findDeviceAutocompleteListCallback(result, code)
 {
-    if(code = "success")
+    result = JSON.stringify(result);
+    if(code === "success")
     {
         try{
             deviceAutocompleteList = result.devices;

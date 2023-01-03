@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request, json
 
 from DatabaseAccess import DatabaseAccess
@@ -102,12 +104,53 @@ def get_devices():
 
 @app.route('/interfaces/' , methods=["GET"])
 def interfaces():
-    return '{"interfaces":["interfaceA","interfaceB"]}' #todo
+    # command is a linux command to get all wifi interfaces
+    command = "iw dev | awk '$1==\"Interface\"{print $2}'"
+    interfaces = os.popen(command).read().splitlines()
+    output = '{"interfaces":['
+    for interface in interfaces:
+        output += f'"{interface}",'
+    output = output[:-1]
+    output += ']}'
+    print("Output: " + output)
+    return output
 
 
 @app.route('/testing/', methods=["POST"])
 def tests():
+    # get interface and test group from request
+    print("TESTING")
+    data = request.get_json()
+    print(data)
+    request_data = data['request']
+    print(request_data)
     data = request.form
+    print(data)
+    # ImmutableMultiDict([('{"request":{"ssid":"dsfdsfds","password":"dsf","interface":"none","name":"fdsfdf","description":"fdsfsd","mode":"client","tests":[{"name":"basic-test","capture":false},{"name":"amsdu-test","capture":false}]}}', '')])
+
+    data = data.to_dict()
+    for item in data:
+        print(item)
+    print(request.get_json())
+    print(data)
+    data = request.get_json(force=True)
+    print(data)
+    print("SOLO")
+
+    name = data["name"]
+    print(name)
+    description = data["description"]
+    mode = data["mode"]
+    ssid = data["ssid"]
+    password = data["password"]
+    tests = data["tests"]
+    #print("Interface: " + interface)
+    print("Name: " + name)
+    print("Description: " + description)
+    print("Mode: " + mode)
+    print("SSID: " + ssid)
+    print(tests)
+
     print(data) #todo start tests
     response = app.response_class(
         response='{"error":"not implemented"}',
@@ -116,21 +159,6 @@ def tests():
     )
     return response
 
-@app.route('/interfaces/' , methods=["GET"])
-def interfaces():
-    return '{"interfaces":["interfaceA","interfaceB"]}' #todo
-
-
-@app.route('/testing/', methods=["POST"])
-def tests():
-    data = request.form
-    print(data) #todo start tests
-    response = app.response_class(
-        response='{"error":"not implemented"}',
-        status=404,
-        mimetype='application/json'
-    )
-    return response
 
 if __name__ == '__main__':
     app.run()

@@ -20,7 +20,7 @@ class DatabaseResultContainer:
             self.test_results.append(row[i])
 
         for i in range(len(self.test_names)):
-            self.tests_names_and_results.append(TestResult(name=self.test_names[i], result=self.test_results[i], alias=None, type=None))
+            self.tests_names_and_results.append(TestResult(name=self.test_names[i], result=self.test_results[i]))
 
     def get_test_results(self):
         return self.test_results
@@ -32,7 +32,16 @@ class DatabaseResultContainer:
         return self.test_id
 
     def __str__(self):
-        return "Test id: " + str(self.test_id) + ", devices ids: " + str(self.devices_ids) + ", test results: " + str(self.test_results)
+        # string in form of "tests":[["testname","true"],["testname2","false"]]
+        tests = ""
+        for i in range(len(self.tests_names_and_results)):
+            tests += f'["{self.tests_names_and_results[i].get_name()}", "{str(self.tests_names_and_results[i].get_result()).lower()}"]'
+            if i != len(self.tests_names_and_results) - 1:
+                tests += ","
+        return f'"tests":[{tests}]'
+        # return "Test id: " + str(self.test_id) + ", devices ids: " + str(self.devices_ids) + ", test results: " + str(self.test_results)
 
+
+if __name__ == '__main__':
     def __repr__(self):
         return self.__str__()

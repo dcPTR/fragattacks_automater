@@ -37,9 +37,12 @@ class DatabaseAccess:
             self.conn.commit()
             print("Database created successfully")
 
-    def export_test_results(self, tests: TestResultsContainer):
+    def export_test_results(self, tests: TestResultsContainer, device1_id: int = None, device2_id: int = None):
+
         self.cursor.execute(
-            f"INSERT INTO test_results ({tests.get_aliases_as_string()}) VALUES ({tests.get_test_results_as_bit_string()})")
+            f"INSERT INTO test_results ({tests.get_aliases_as_string()}, device1_id, device2_id) VALUES ({tests.get_test_results_as_bit_string()}, {device1_id}, {device2_id})")
+        # self.cursor.execute(
+        #     f"INSERT INTO test_results ({tests.get_aliases_as_string()}) VALUES ({tests.get_test_results_as_bit_string()})")
         self.conn.commit()
         print("Test results exported successfully")
 
@@ -54,6 +57,8 @@ class DatabaseAccess:
             f"'{device.get_description()}', '{device.get_software_version()}')")
         self.conn.commit()
         print("Device exported successfully")
+        self.cursor.execute("SELECT @@IDENTITY AS 'Identity';")
+        return self.cursor.fetchone()[0]    # id of the inserted device
 
     def print_devices(self):
         self.cursor.execute("SELECT * FROM devices")
@@ -70,7 +75,18 @@ class DatabaseAccess:
 
     def import_test_results(self):
         dbcs = []
+        # self.cursor.execute("SELECT * FROM test_results INNER JOIN devices AS d1 ON test_results.device1_id = d1.id INNER JOIN devices AS d2 ON test_results.device2_id = d2.id")
         self.cursor.execute("SELECT * FROM test_results")
         for row in self.cursor:
+            print(row)
             dbcs.append(DatabaseResultContainer(row))
+            print(dbcs[-1])
         return dbcs
+
+    def get_device_by_name(self, device_name):
+        self.cursor.execute(f"SELECT * FROM devices WHERE name = '{device_name}'")
+        return self.cursor.fetchone()
+
+    def get_device_by_id(self, device_id):
+        self.cursor.execute(f"SELECT * FROM devices WHERE id = {device_id}")
+        return self.cursor.fetchone()

@@ -8,7 +8,8 @@ function createOption(value)
 
 function loadInterfacesCallback(result, code)
 {
-    if(code == "success")
+    result = JSON.stringify(result);
+    if(code === "success")
     {
         var interfaces = result
         var interfaceSelect = $("#network-interface")
@@ -28,7 +29,7 @@ function loadInterfaces()
 {
     const interfaceURL = "http://127.0.0.1:5000/interfaces/"
 
-    if(interfaceURL == "debug")
+    if(interfaceURL === "debug")
     {
         loadInterfacesCallback(JSON.parse('{"interfaces":["interfaceA","interfaceB"]}'), "success")
     }
@@ -44,11 +45,12 @@ function loadInterfaces()
 
 function createTestSubmissionDaoFromForm()
 {
-    var dao = new Object()
-    dao.request = new Object()
+    var dao = {}
+    dao.request = {}
     dao.request.ssid = $("#ssid").val()
     dao.request.password = $("#password").val()
     dao.request.interface = $("#network-interface").val()
+    dao.request.name = $("#device-name").val()
     dao.request.description = $("#device-description").val()
     dao.request.mode = $('input[name="client-ap"]:checked').val();
     dao.request.tests = new Array()
@@ -67,12 +69,12 @@ function createTestSubmissionDaoFromForm()
         }
     })
 
-    return JSON.stringify(dao)
+    return dao;
 }
 
 function submissionSuccessCallback(response, code)
 {
-    if(code == "success")
+    if(code === "success")
     {
         alert("Test submission successful")
     }
@@ -91,6 +93,8 @@ function submitTestRequest(event)
         url:sumissionURL,
         data:dao,
         dataType:"json",
+        type:"POST",
+        contentType:"application/json",
         method:"POST",
         success:submissionSuccessCallback
     })

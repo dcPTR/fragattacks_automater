@@ -41,14 +41,21 @@ from TestsFileImporter import TestsFileImporter
 #     "eapol-amsdu-bad BP": ("eapol4", False),
 # }
 
-trc = TestResultsContainer(TestsFileImporter().get_test_results())
+example_results = TestsFileImporter().get_test_results()
+
+print(example_results)
+
+trc = TestResultsContainer(example_results)
 
 db = DatabaseAccess()
 db.create_database()
-db.export_test_results(trc)
+device = Device("test device name", "test description", "1.0.0")
+print(device)
+id1 = db.export_device(device)
+device = Device("test device name 2", "test description 2", "1.1.0")
+id2 = db.export_device(device)
+db.print_devices()
+
+db.export_test_results(trc, id1, id2)
 print(db.import_test_results())
 db.print_test_results()
-
-device = Device("test name", "test description", "1.0.0")
-db.export_device(device)
-db.print_devices()
