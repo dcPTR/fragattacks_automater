@@ -128,7 +128,6 @@ function displayTestList(version)
 
 function testListApiCallback(result, code)
 {
-    result = JSON.stringify(result);
     if(code === "success")
     {
         currentDeviceListObject = result;
@@ -194,14 +193,13 @@ function submitDeviceTestSearch(event)
 
 function findDeviceAutocompleteListCallback(result, code)
 {
-    result = JSON.stringify(result);
     if(code === "success")
     {
         try{
-            deviceAutocompleteList = result.devices;
+            deviceAutocompleteSet = Array.from(new Set(result.devices));
             $("#device-name").autocomplete(
                 {
-                    source:deviceAutocompleteList
+                    source:deviceAutocompleteSet
                 }
               );
         }
