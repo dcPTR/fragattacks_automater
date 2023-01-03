@@ -68,7 +68,7 @@ function createTestSubmissionDaoFromForm()
         }
     })
 
-    return dao;
+    return JSON.stringify(dao)
 }
 
 function submissionSuccessCallback(response, code)
@@ -93,7 +93,7 @@ function submitTestRequest(event)
         data:dao,
         dataType:"json",
         type:"POST",
-        contentType:"application/json",
+
         method:"POST",
         success:submissionSuccessCallback
     })
