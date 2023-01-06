@@ -8,6 +8,11 @@
 ```sh
 pip3 install pyshark && pip3 install colorama
 ```
+Rowniez moze zajsc potrzeba instalacji TShark:
+```sh
+apt-get install tshark
+```
+
 6. Uruchom automater: 
 ```py
 python3 automater.py
