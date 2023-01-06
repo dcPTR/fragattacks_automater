@@ -6,24 +6,24 @@ from Device import Device
 from MongoDatabase import MongoDatabase
 from TestResult import TestResult
 from TestResultsContainer import TestResultsContainer
+from Automater import Automater
 
 app = Flask(__name__)
 
 
 @app.route('/')
-@app.route('/index.html')
 def index():
     return render_template('index.html')
 
-@app.route('/test')
-@app.route('/test.html')
-def testPage():
-    return render_template('test.html')
 
 @app.route("/list", methods=["GET"])
-@app.route("/list.html", methods=["GET"])
-def list_tests():
+def list_lists():
     return render_template('list.html')
+
+
+@app.route("/test", methods=["GET"])
+def list_tests():
+    return render_template('test.html')
 
 
 def add_dev(db):
@@ -63,18 +63,18 @@ def get_device(device_name):
     return response
 
 
-@app.route("/testing/<interface>/<test_group>", methods=["POST"])
-def test(interface, test_group):
-    capture = request.args.get('capture')
-    if capture == "true":
-        print("yes")
-
-    response = app.response_class(
-        response='{"error":"not implemented"}',
-        status=404,
-        mimetype='application/json'
-    )
-    return response
+# @app.route("/testing/<interface>/<test_group>", methods=["POST"])
+# def test(interface, test_group):
+#     capture = request.args.get('capture')
+#     if capture == "true":
+#         print("yes")
+#
+#     response = app.response_class(
+#         response='{"error":"not implemented"}',
+#         status=404,
+#         mimetype='application/json'
+#     )
+#     return response
 
 
 @app.route("/devices/", methods=["GET"])
@@ -87,9 +87,6 @@ def get_devices():
     for document in cursor:
         devices.append({key: value for key, value in document.items() if key == "device"})
 
-    # for all device in devices
-    # output should be like this: '{"devices":["test_debug_device","test_debug_device2"]}')
-    # use for loop to get all devices
     output = '{"devices":['
     for device in devices:
         output += f'"{device["device"]["name"]}",'
@@ -106,6 +103,7 @@ def get_devices():
         mimetype='application/json'
     )
     return response
+
 
 @app.route('/interfaces/' , methods=["GET"])
 def interfaces():
@@ -137,9 +135,16 @@ def tests():
     print("Mode: " + mode)
     print("SSID: " + ssid)
     print("Password: " + password)
-    print(tests)
 
-    print(data) #todo start tests
+    for test in tests:
+        test_group = test["name"]
+        test_capture = test["capture"]
+        # print("Test group: ", test_group)
+        # print("Test capture: ", test_capture)
+        Automater(capture=test_capture, interface=interface, group=test_group)
+        # print("Test: ", test)
+    # print(tests)
+
     response = app.response_class(
         response='{"error":"not implemented"}',
         status=404,
