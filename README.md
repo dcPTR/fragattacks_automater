@@ -13,7 +13,26 @@ Rowniez moze zajsc potrzeba instalacji TShark:
 apt-get install tshark
 ```
 
-6. Uruchom automater: 
+6. Dodaj siec od routera testowanego do pliku client.conf poprzez dodanie na koniec pliku fragmentu
+```py
+network={
+	ssid="NetworkSSID"
+	psk="password"
+
+	pairwise=CCMP
+	#group=CCMP
+
+	# Some network cards don't properly support injection on non-20MHz
+	# channels. In that case uncomment this line to disable 40 MHz.
+	#disable_ht40=1
+
+	# Might be useful in very noisy environments to disable high bitrates.
+	#disable_ht=1
+}
+```
+zamieniajac 'NetworkSSID' na SSID sieci z testowanego routera, a 'password' na haslo od niej.
+
+7. Uruchom automater: 
 ```py
 python3 automater.py
 ```
