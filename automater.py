@@ -7,7 +7,7 @@ import pyshark as pyshark
 from colorama import Fore, Style
 
 research_dir = os.getcwd()
-iface = "wlp0s20f3"
+iface = "wlo1"
 should_capture = True
 
 tests = {
@@ -51,13 +51,14 @@ tests = {
 
 def attack(attackType="ping", interface="wlp0s20f3"):
     command = f"{research_dir}/fragattack.py {interface} {attackType}"
-    # os.system(command)
+    #os.system(command)
     log = os.popen(command).read()
     if ">>> TEST COMPLETED SUCCESSFULLY" in log:
-        tests[attackType][1] = True
+        lst = list(tests[attackType])
+        lst[1] = True
+        tests[attackType] = tuple(lst)
         return True
     return False
-
 
 def sniff(capture):
     # for raw_packet in capture.sniff_continuously():
