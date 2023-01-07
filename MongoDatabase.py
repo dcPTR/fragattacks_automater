@@ -11,6 +11,7 @@ class MongoDatabase:
         self.collection = self.db["test_results"]
 
     def insert_data(self, data):
+        print(data)
         self.collection.insert_one(data)
 
     def find_device_by_name(self, device_name):

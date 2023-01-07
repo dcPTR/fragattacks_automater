@@ -1,6 +1,7 @@
+import os
+
 from flask import Flask, render_template, request, json
 
-from DatabaseAccess import DatabaseAccess
 from Device import Device
 from MongoDatabase import MongoDatabase
 from TestResult import TestResult
@@ -10,11 +11,17 @@ app = Flask(__name__)
 
 
 @app.route('/')
+@app.route('/index.html')
 def index():
+    return render_template('index.html')
+
+@app.route('/test')
+@app.route('/test.html')
+def testPage():
     return render_template('test.html')
 
-
 @app.route("/list", methods=["GET"])
+@app.route("/list.html", methods=["GET"])
 def list_tests():
     return render_template('list.html')
 
@@ -72,13 +79,27 @@ def test(interface, test_group):
 
 @app.route("/devices/", methods=["GET"])
 def get_devices():
+    print("get devices")
     db = MongoDatabase()
     add_dev(db)
     cursor = db.get_all_data()
-    output = []
+    devices = []
     for document in cursor:
-        output.append({key: value for key, value in document.items() if key == "device"})
+        devices.append({key: value for key, value in document.items() if key == "device"})
+
+    # for all device in devices
+    # output should be like this: '{"devices":["test_debug_device","test_debug_device2"]}')
+    # use for loop to get all devices
+    output = '{"devices":['
+    for device in devices:
+        output += f'"{device["device"]["name"]}",'
+    output = output[:-1]
+    output += ']}'
+    print("Output: " + output)
+
     response_text = f"{output}".replace("'", '"')
+    print("Response text: " + response_text)
+
     response = app.response_class(
         response=response_text,
         status=200,
@@ -88,12 +109,36 @@ def get_devices():
 
 @app.route('/interfaces/' , methods=["GET"])
 def interfaces():
-    return '{"interfaces":["interfaceA","interfaceB"]}' #todo
+    command = "iw dev | awk '$1==\"Interface\"{print $2}'"
+    interfaces = os.popen(command).read().splitlines()
+    output = '{"interfaces":['
+    for interface in interfaces:
+        output += f'"{interface}",'
+    output = output[:-1]
+    output += ']}'
+    return output
 
 
 @app.route('/testing/', methods=["POST"])
 def tests():
-    data = request.form
+    data = json.loads(next(iter(request.form)))
+    request_data = data.get("request")
+
+    name = request_data["name"]
+    description = request_data["description"]
+    mode = request_data["mode"]
+    ssid = request_data["ssid"]
+    password = request_data["password"]
+    interface = request_data["interface"]
+    tests = request_data["tests"]
+    print("Interface: " + interface)
+    print("Name: " + name)
+    print("Description: " + description)
+    print("Mode: " + mode)
+    print("SSID: " + ssid)
+    print("Password: " + password)
+    print(tests)
+
     print(data) #todo start tests
     response = app.response_class(
         response='{"error":"not implemented"}',
@@ -101,6 +146,7 @@ def tests():
         mimetype='application/json'
     )
     return response
+
 
 if __name__ == '__main__':
     app.run()
