@@ -196,12 +196,13 @@ function findDeviceAutocompleteListCallback(result, code)
     if(code === "success")
     {
         try{
-            deviceAutocompleteSet = Array.from(new Set(result.devices));
+            deviceAutocompleteSet = Array.from(new Set(result.devices))
             $("#device-name").autocomplete(
                 {
                     source:deviceAutocompleteSet
                 }
               );
+            $("#device-list-loading").addClass("d-none")
         }
         catch( error )
         {
@@ -233,7 +234,7 @@ function findDeviceAutocompleteList()
 }
 
 $(window).on('load', function(event) {
-    $("#search-button").on("click", submitDeviceTestSearch);
-    $("#search-version-button").on("click", submitTestSearch);
+    $("#search-button").on("click", submitDeviceTestSearch)
+    $("#search-version-button").on("click", submitTestSearch)
     findDeviceAutocompleteList()
    });
