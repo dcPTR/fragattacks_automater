@@ -128,12 +128,17 @@ function displayTestList(version)
 
 function testListApiCallback(result, code)
 {
-    result = JSON.stringify(result);
-    result = "["+result+"]";
-    console.log(result);
     if(code === "success")
     {
-        currentDeviceListObject = result;
+        if(typeof result[Symbol.iterator] === 'function')
+        {
+            currentDeviceListObject = result
+        }
+        else
+        {
+            currentDeviceListObject = new Array()
+            currentDeviceListObject.push(result);
+        }
         findtestVersions()
         $("#test-version-form-container").removeClass("d-none")
     }
