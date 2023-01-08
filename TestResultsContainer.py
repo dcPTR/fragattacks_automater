@@ -4,7 +4,7 @@ from TestResult import TestResult
 
 
 class TestResultsContainer:
-    def __init__(self, test_results: list[TestResult]):
+    def __init__(self, test_results: """list[TestResult]"""):
         self.test_results = test_results
         self.sanity_checks = []
         self.basic_device_behaviour = []

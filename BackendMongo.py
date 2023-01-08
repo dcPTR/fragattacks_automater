@@ -138,7 +138,8 @@ def tests():
         trc = TestResultsContainer(results)
         tests_json = trc.get_json()
         js_concat = {**dev_json, **tests_json}
-        db.insert_data(f"[{js_concat}]")
+        print(js_concat)
+        db.insert_data(js_concat)
 
         # print("Test: ", test)
     # print(tests)
