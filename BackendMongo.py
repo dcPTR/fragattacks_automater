@@ -7,6 +7,7 @@ from MongoDatabase import MongoDatabase
 from TestResult import TestResult
 from TestResultsContainer import TestResultsContainer
 from Automater import Automater
+from ClientConfiguration import replace_conf_file
 
 app = Flask(__name__)
 
@@ -123,10 +124,11 @@ def tests():
     print("Mode: " + mode)
     print("SSID: " + ssid)
     print("Password: " + password)
-
+    replace_conf_file(ssid, password)
     dev = Device(name=name, description=description, software_version=version)
     dev_json = dev.get_json()
     results_container = []
+
     for test in tests:
         test_group = test["name"]
         test_capture = test["capture"]
