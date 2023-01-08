@@ -22,11 +22,13 @@ class Automater:
         self.interface = interface
         self.group_name = group
         # initialize(capture=capture, interface=interface, group=group)
-        self.tests = TestsFileImporter().get_test_results()
-        for test in self.tests:
+        self.tests_all = TestsFileImporter().get_test_results()
+        self.tests = []
+        for test in self.tests_all:
             if self.group_name is not None:
-                if test.group_name != self.group_name:
-                    self.tests.remove(test)
+                if test.type == self.group_name:
+                    self.tests.append(test)
+
         self.results = TestResultsContainer(self.tests)
 
     def run(self):
