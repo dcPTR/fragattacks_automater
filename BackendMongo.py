@@ -136,7 +136,12 @@ def tests():
         results = auto.run()
         results_container.append(results)
     print("Results: ", results_container)
-    trc = TestResultsContainer(results_container)
+    results = []
+    for result in results_container:
+        for item in result:
+            results.append(item)
+    print("Results: ", results)
+    trc = TestResultsContainer(results)
     tests_json = trc.get_json()
     js_concat = {**dev_json, **tests_json}
     print(js_concat)

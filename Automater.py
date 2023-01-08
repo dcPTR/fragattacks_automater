@@ -1,7 +1,6 @@
 import os
 import sys
 import threading
-from time import sleep
 
 import pyshark as pyshark
 from colorama import Fore, Style
