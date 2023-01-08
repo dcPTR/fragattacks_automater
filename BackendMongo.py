@@ -126,7 +126,7 @@ def tests():
 
     dev = Device(name=name, description=description, software_version=version)
     dev_json = dev.get_json()
-
+    results_container = []
     for test in tests:
         test_group = test["name"]
         test_capture = test["capture"]
@@ -134,13 +134,13 @@ def tests():
         # print("Test capture: ", test_capture)
         auto = Automater(capture=test_capture, interface=interface, group=test_group)
         results = auto.run()
-        print("Results: ", results)
-        trc = TestResultsContainer(results)
-        tests_json = trc.get_json()
-        js_concat = {**dev_json, **tests_json}
-        print(js_concat)
-        db.insert_data(js_concat)
-
+        results_container.append(results)
+    print("Results: ", results_container)
+    trc = TestResultsContainer(results_container)
+    tests_json = trc.get_json()
+    js_concat = {**dev_json, **tests_json}
+    print(js_concat)
+    db.insert_data(js_concat)
         # print("Test: ", test)
     # print(tests)
 
