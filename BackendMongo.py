@@ -134,6 +134,7 @@ def tests():
         # print("Test capture: ", test_capture)
         auto = Automater(capture=test_capture, interface=interface, group=test_group)
         results = auto.run()
+        print("Results: ", results)
         trc = TestResultsContainer(results)
         tests_json = trc.get_json()
         js_concat = {**dev_json, **tests_json}
@@ -143,8 +144,8 @@ def tests():
     # print(tests)
 
     response = app.response_class(
-        response='{"error":"not implemented"}',
-        status=403,
+        response='{"status":"success"}',
+        status=200,
         mimetype='application/json'
     )
     return response
