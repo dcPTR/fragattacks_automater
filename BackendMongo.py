@@ -28,6 +28,9 @@ def list_lists():
 def list_tests():
     return render_template('test.html')
 
+@app.route("/guide", methods=["GET"])
+def guide():
+    return render_template('guide.html')
 
 def add_dev():
     global db
