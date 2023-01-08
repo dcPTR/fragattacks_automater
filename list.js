@@ -128,6 +128,7 @@ function displayTestList(version)
 
 function testListApiCallback(result, code)
 {
+    result = JSON.stringify(wresult);
     if(code = "success")
     {
         try{
@@ -149,7 +150,7 @@ function testListApiCallback(result, code)
 
 function callTestListApi(deviceName)
 {
-    const apiurl = "https://jsonplaceholder.typicode.com/todos/1/"; //put real api endpoint url here
+    const apiurl = "http://127.0.0.1:5000/devices/"; //put real api endpoint url here
 
     if(deviceName === "test_debug_device")
     {
@@ -200,7 +201,10 @@ function submitDeviceTestSearch(event)
 
 function findDeviceAutocompleteListCallback(result, code)
 {
-    if(code = "success")
+    result = JSON.stringify(result);
+    console.log(result);
+    console.log(code);
+    if(code === "success")
     {
         try{
             deviceAutocompleteList = JSON.parse(result).devices;
@@ -223,15 +227,21 @@ function findDeviceAutocompleteListCallback(result, code)
 
 function findDeviceAutocompleteList()
 {
-    const deviceListURD = "debug" //fill with proper url
+    const deviceListURD = "http://127.0.0.1:5000/devices/" //fill with proper url
+    //const deviceListURD = "debug" //fill with proper url
 
-    if(deviceListURD == "debug")
+    if(deviceListURD === "debug")
     {
-        findDeviceAutocompleteListCallback('{"devices":["test_debug_device","test_debug_device2"]}')
+        console.log("debug mode")
+        findDeviceAutocompleteListCallback('{"devices":["test_debug_device","test_debug_device2"]}', "success")
     }
     else
     {
-
+        $.ajax({
+            url:deviceListURD,
+            dataType:"json",
+            success:findDeviceAutocompleteListCallback
+        })
     }
 }
 

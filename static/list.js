@@ -128,6 +128,9 @@ function displayTestList(version)
 
 function testListApiCallback(result, code)
 {
+    result = JSON.stringify(result);
+    result = "["+result+"]";
+    console.log(result);
     if(code === "success")
     {
         currentDeviceListObject = result;
@@ -193,6 +196,7 @@ function submitDeviceTestSearch(event)
 
 function findDeviceAutocompleteListCallback(result, code)
 {
+    //result = JSON.stringify(result);
     if(code === "success")
     {
         try{

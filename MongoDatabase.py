@@ -10,6 +10,9 @@ class MongoDatabase:
         self.db = self.client["fragattacks"]
         self.collection = self.db["test_results"]
 
+    def clear_collection(self):
+        self.collection.delete_many({})
+
     def insert_data(self, data):
         print(data)
         self.collection.insert_one(data)

@@ -10,6 +10,8 @@ from Automater import Automater
 
 app = Flask(__name__)
 
+db = MongoDatabase()
+
 
 @app.route('/')
 def index():
@@ -26,7 +28,8 @@ def list_tests():
     return render_template('test.html')
 
 
-def add_dev(db):
+def add_dev():
+    global db
     dev1 = Device("Test Device", "Test Description", "1.23.486_test")
     dev2 = Device("Test Device 2", "Test Description 2", "2.0")
     test1 = TestResult("Test", "Test", "Test", True)
@@ -44,8 +47,6 @@ def add_dev(db):
 
 @app.route("/devices/<device_name>", methods=["GET"])
 def get_device(device_name):
-    db = MongoDatabase()
-    add_dev(db)
     cursor = db.find_device_by_name(device_name)
     output = {}
     for document in cursor:
@@ -63,25 +64,10 @@ def get_device(device_name):
     return response
 
 
-# @app.route("/testing/<interface>/<test_group>", methods=["POST"])
-# def test(interface, test_group):
-#     capture = request.args.get('capture')
-#     if capture == "true":
-#         print("yes")
-#
-#     response = app.response_class(
-#         response='{"error":"not implemented"}',
-#         status=404,
-#         mimetype='application/json'
-#     )
-#     return response
-
-
 @app.route("/devices/", methods=["GET"])
 def get_devices():
-    print("get devices")
     db = MongoDatabase()
-    add_dev(db)
+
     cursor = db.get_all_data()
     devices = []
     for document in cursor:
@@ -105,7 +91,7 @@ def get_devices():
     return response
 
 
-@app.route('/interfaces/' , methods=["GET"])
+@app.route('/interfaces/', methods=["GET"])
 def interfaces():
     command = "iw dev | awk '$1==\"Interface\"{print $2}'"
     interfaces = os.popen(command).read().splitlines()
@@ -119,11 +105,13 @@ def interfaces():
 
 @app.route('/testing/', methods=["POST"])
 def tests():
+    global db
     data = json.loads(next(iter(request.form)))
     request_data = data.get("request")
 
     name = request_data["name"]
     description = request_data["description"]
+    version = request_data["version"]
     mode = request_data["mode"]
     ssid = request_data["ssid"]
     password = request_data["password"]
@@ -136,18 +124,27 @@ def tests():
     print("SSID: " + ssid)
     print("Password: " + password)
 
+    dev = Device(name=name, description=description, software_version=version)
+    dev_json = dev.get_json()
+
     for test in tests:
         test_group = test["name"]
         test_capture = test["capture"]
         # print("Test group: ", test_group)
         # print("Test capture: ", test_capture)
-        Automater(capture=test_capture, interface=interface, group=test_group)
+        auto = Automater(capture=test_capture, interface=interface, group=test_group)
+        results = auto.run()
+        trc = TestResultsContainer(results)
+        tests_json = trc.get_json()
+        js_concat = {**dev_json, **tests_json}
+        db.insert_data(f"[{js_concat}]")
+
         # print("Test: ", test)
     # print(tests)
 
     response = app.response_class(
         response='{"error":"not implemented"}',
-        status=404,
+        status=403,
         mimetype='application/json'
     )
     return response

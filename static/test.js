@@ -51,6 +51,7 @@ function createTestSubmissionDaoFromForm()
     dao.request.interface = $("#network-interface").val()
     dao.request.name = $("#device-name").val()
     dao.request.description = $("#device-description").val()
+    dao.request.version = $("#device-version").val()
     dao.request.mode = $('input[name="client-ap"]:checked').val();
     dao.request.tests = new Array()
     
