@@ -1,4 +1,5 @@
 import os
+import threading
 
 from flask import Flask, render_template, request, json, send_from_directory
 
@@ -168,8 +169,7 @@ def interfaces():
     return output
 
 
-@app.route('/testing/', methods=["POST"])
-def tests():
+def test_thread(request):
     global db
     data = json.loads(next(iter(request.form)))
     request_data = data.get("request")
@@ -214,6 +214,11 @@ def tests():
     db.insert_data(js_concat)
         # print("Test: ", test)
     # print(tests)
+
+@app.route('/testing/', methods=["POST"])
+def tests():
+    test_thread = threading.Thread(target=test_thread, args=(request), daemon=True)
+    test_thread.start()
 
     response = app.response_class(
         response='{"status":"success"}',
