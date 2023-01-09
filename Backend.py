@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, json
+from flask import Flask, render_template, request, json, send_from_directory
 
 from DatabaseAccess import DatabaseAccess
 from Device import Device
 from TestResultsContainer import TestResultsContainer
 from TestsFileImporter import TestsFileImporter
+from os import getcwd, path
 
 app = Flask(__name__)
 
@@ -53,6 +54,17 @@ def get_device(device_name):
     dbcs = db.import_test_results()
     db.print_test_results()
     response_text = f"{{{device}, {dbcs[0]}}}"
+    response_object = json.load(response_text)
+
+    if "tests" in response_object:
+        for test in response_object["tests"]:
+            # if test has 3 values, 3rd value should be name of the capture dump file
+            # format: ["test name", "test status", <"dump file name">]
+            if len(test >= 3): 
+                if not path.exists(getcwd() + "/captures/" + test[2]):
+                    #if file can't be find on the server, don't send it to the user
+                    test.pop(2)
+
     response = app.response_class(
         # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},"tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}',
         response=response_text,
@@ -60,6 +72,13 @@ def get_device(device_name):
         mimetype='application/json'
     )
     return response
+
+# route for /captures/{device_name}
+@app.route("/captures/<file_name>", methods=["GET"])
+def get_capture_file(file_name):
+    return send_from_directory(
+        getcwd()+"/captures", file_name, as_attachment=True
+    )
 
 # route for testing/{interface}/{test_group} in method POST
 #it should check if there is query parameter "capture" with value "true"

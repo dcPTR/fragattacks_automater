@@ -105,21 +105,66 @@ function displayTestList(version)
         var row = testRowTemplate.clone();
         var name = element[0];
         var testResult = element[1];
+        var testCaptureName = null
+        if(element.length > 2)
+        {
+            testCaptureName = element[2]
+        }
 
         row.find(".test-name-cell").html(name);
         row.find(".test-result-cell").html(testResult);
-        if(testResult === "true")
+
+        //these test don't looks for vulnerabilities
+        behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep", "ping-frag-sep --pn-per-qos"]
+
+        if(behavior_tests.indexOf(name) > -1)
         {
-            row.addClass("table-success")
-        }
-        else if(testResult === "false")
-        {
-            row.addClass("table-danger")
+            if(testResult === "true")
+            {
+                row.find(".test-result-cell").html("Test Successful");
+                row.addClass("table-success")
+            }
+            else if(testResult === "false")
+            {
+                row.find(".test-result-cell").html("Not supported");
+                row.addClass("table-danger")
+            }
+            else
+            {
+                row.find(".test-result-cell").html("Result is missing");
+                row.addClass("table-warning")
+            }
         }
         else
         {
-            row.addClass("table-warning")
+            if(testResult === "true")
+            {
+                row.find(".test-result-cell").html("Vulnerable");
+                row.addClass("table-danger")
+            }
+            else if(testResult === "false")
+            {
+                row.find(".test-result-cell").html("Secure");
+                row.addClass("table-success")
+            }
+            else
+            {
+                row.find(".test-result-cell").html("Result is missing");
+                row.addClass("table-warning")
+            }
         }
+
+
+        
+        if(testCaptureName != null)
+        {
+            row.find(".test-download-link").attr("href", "/captures/" + testCaptureName);
+        }
+        else
+        {
+            row.find(".test-download-link").html("");
+        }
+
         $("#device-test-table").append(row);
     });
 

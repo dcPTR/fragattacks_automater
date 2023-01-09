@@ -70,6 +70,7 @@ class Automater:
 
     def automate(self, test: TestResult):
         print(f"Starting attack {Fore.YELLOW}{test.name}{Style.RESET_ALL} ")
+        file = ""
         if self.should_capture:
             file = f"{self.research_dir}/captures/capture_{test}.pcap"
             output = open(file, "w")
