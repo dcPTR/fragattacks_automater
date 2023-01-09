@@ -269,6 +269,114 @@ function findDeviceAutocompleteListCallback(result, code)
     }
 }
 
+function testListAllApiCallback(result, code)
+{
+    if(code === "success")
+    {
+    
+        var testList = null
+        currentDeviceListObject.forEach(e => {
+            if(e.device.version === version)
+                {
+                    testList = e
+                }
+            }
+        )
+
+        result.forEach(device =>
+        {
+            deviceName = device.device
+            deviceVersion = device.version
+            testList = device.tests
+            
+            $(".test-row").remove();
+
+            testRowTemplate = $(".test-row-template").clone();
+            testRowTemplate.removeClass("test-row-template");
+            testRowTemplate.removeClass("d-none");
+            testRowTemplate.addClass("test-row");
+
+            testList.tests.forEach(element => {
+                var row = testRowTemplate.clone();
+                var testName = element[0];
+                var testResult = element[1];
+                var testCaptureName = null
+                if(element.length > 2)
+                {
+                    testCaptureName = element[2]
+                }
+
+                row.find(".device-name-cell").html(deviceName);
+                row.find(".device-version-cell").html(deviceVersion);
+                row.find(".test-name-cell").html(testName);
+                row.find(".test-result-cell").html(testResult);
+
+                //these test don't looks for vulnerabilities
+                behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep", "ping-frag-sep --pn-per-qos"]
+
+                if(behavior_tests.indexOf(testName) > -1)
+                {
+                    if(testResult === "true")
+                    {
+                        row.find(".test-result-cell").html("Test Successful");
+                        row.addClass("table-success")
+                    }
+                    else if(testResult === "false")
+                    {
+                        row.find(".test-result-cell").html("Not supported");
+                        row.addClass("table-danger")
+                    }
+                    else
+                    {
+                        row.find(".test-result-cell").html("Result is missing");
+                        row.addClass("table-warning")
+                    }
+                }
+                else
+                {
+                    if(testResult === "true")
+                    {
+                        row.find(".test-result-cell").html("Vulnerable");
+                        row.addClass("table-danger")
+                    }
+                    else if(testResult === "false")
+                    {
+                        row.find(".test-result-cell").html("Secure");
+                        row.addClass("table-success")
+                    }
+                    else
+                    {
+                        row.find(".test-result-cell").html("Result is missing");
+                        row.addClass("table-warning")
+                    }
+                }
+                if(testCaptureName != null)
+                {
+                    row.find(".test-download-link").attr("href", "/captures/" + testCaptureName);
+                }
+                else
+                {
+                    row.find(".test-download-link").html("");
+                }
+
+                $("#device-test-table").append(row);
+            });        
+        })
+    $("#test-display-container").removeClass("d-none");       
+    }
+}
+
+function displayAllTestResults()
+{
+    const apiurl = "/all_devices/";
+
+    $.ajax({
+        url:apiurl,
+        dataType:"json",
+        success:testListAllApiCallback
+    })
+}
+
 function findDeviceAutocompleteList()
 {
     const deviceListURL = "/devices/" //fill with proper url
@@ -288,7 +396,14 @@ function findDeviceAutocompleteList()
 }
 
 $(window).on('load', function(event) {
-    $("#search-button").on("click", submitDeviceTestSearch)
-    $("#search-version-button").on("click", submitTestSearch)
-    findDeviceAutocompleteList()
+    if(window.location.pathname === "/list")
+    {
+        $("#search-button").on("click", submitDeviceTestSearch)
+        $("#search-version-button").on("click", submitTestSearch)
+        findDeviceAutocompleteList()
+    }
+    if(window.location.pathname === "/list_all")
+    {
+        displayAllTestResults();
+    }
    });

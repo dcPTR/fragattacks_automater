@@ -23,6 +23,10 @@ def index():
 def list_lists():
     return render_template('list.html')
 
+@app.route("/list_all", methods=["GET"])
+def list_all():
+    return render_template('list_all.html')
+
 
 @app.route("/test", methods=["GET"])
 def list_tests():
@@ -69,6 +73,44 @@ def get_device(device_name):
                     #if file can't be find on the server, don't send it to the user
                     test.pop(2)
     response_text = json.dumps(response_object)
+
+    response = app.response_class(
+        # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},
+        # "tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}',
+        response=response_text,
+        status=200,
+        mimetype='application/json'
+    )
+
+    return response
+
+@app.route("/all_devices/", methods=["GET"])
+def get_all_devices():
+    cursor = db.get_all_data()
+    output = {}
+    for document in cursor:
+        output = {key: value for key, value in document.items() if key != "_id"}
+
+    response_text = f"{output}".replace("'", '"')
+
+    response_object = json.loads(response_text)
+
+    print(response_object)
+    print(type(response_object))
+    for device in response_object:
+
+        print(type(device))
+        device_object = json.loads(device)
+        print(type(device_object))
+        if "tests" in device:
+            for test in device["tests"]:
+                # if test has 3 values, 3rd value should be name of the capture dump file
+                # format: ["test name", "test status", <"dump file name">]
+                if len(test) >= 3: 
+                    if not os.path.exists(os.getcwd() + "/captures/" + test[2]):
+                        #if file can't be find on the server, don't send it to the user
+                        test.pop(2)
+        device = json.dumps(device_object)
 
     response = app.response_class(
         # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},
