@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, json
+from flask import Flask, render_template, request, json, send_from_directory
 
 from Device import Device
 from MongoDatabase import MongoDatabase
@@ -57,6 +57,19 @@ def get_device(device_name):
         output = {key: value for key, value in document.items() if key != "_id"}
 
     response_text = f"{output}".replace("'", '"')
+
+    response_object = json.loads(response_text)
+
+    if "tests" in response_object:
+        for test in response_object["tests"]:
+            # if test has 3 values, 3rd value should be name of the capture dump file
+            # format: ["test name", "test status", <"dump file name">]
+            if len(test) >= 3: 
+                if not os.path.exists(os.getcwd() + "/captures/" + test[2]):
+                    #if file can't be find on the server, don't send it to the user
+                    test.pop(2)
+    response_text = json.dumps(response_object)
+
     response = app.response_class(
         # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},
         # "tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}',
@@ -67,6 +80,12 @@ def get_device(device_name):
 
     return response
 
+# route for /captures/{device_name}
+@app.route("/captures/<file_name>", methods=["GET"])
+def get_capture_file(file_name):
+    return send_from_directory(
+        os.getcwd()+"/captures", file_name, as_attachment=True
+    )
 
 @app.route("/devices/", methods=["GET"])
 def get_devices():
