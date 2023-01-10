@@ -285,8 +285,8 @@ function testListAllApiCallback(result, code)
 
         result.forEach(device =>
         {
-            deviceName = device.device
-            deviceVersion = device.version
+            deviceName = device.device.name
+            deviceVersion = device.device.version
             testList = device.tests
             
             $(".test-row").remove();
