@@ -1,6 +1,5 @@
 import os
 import threading
-from time import sleep
 
 from flask import Flask, render_template, request, json, send_from_directory
 

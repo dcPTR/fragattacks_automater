@@ -84,7 +84,7 @@ function submitTestRequest(event)
 {
     event.preventDefault();
 
-    sumissionURL = "/testing"
+    sumissionURL = "/testing/"
     
     var dao = createTestSubmissionDaoFromForm()
     console.log(dao)
