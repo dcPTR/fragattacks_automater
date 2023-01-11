@@ -342,16 +342,22 @@ function testListAllApiCallback(result, code)
                     {
                         row.find(".test-result-cell").html("Test Successful");
                         row.addClass("table-success")
+                        row.removeClass("table-danger")
+                        row.removeClass("table-warning")
                     }
                     else if(testResult === "false")
                     {
                         row.find(".test-result-cell").html("Not supported");
-                        row.addClass("table-danger")
+                        row.addClass("table-danger");
+                        row.removeClass("table-success")
+                        row.removeClass("table-warning")
                     }
                     else
                     {
                         row.find(".test-result-cell").html("Result invalid or missing");
                         row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
                     }
                 }
                 if(potantial_vuln_tests.indexOf(testName) > -1)
@@ -360,16 +366,22 @@ function testListAllApiCallback(result, code)
                     {
                         row.find(".test-result-cell").html("Potentially Vulnerable");
                         row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
                     }
                     else if(testResult === "false")
                     {
                         row.find(".test-result-cell").html("Secure");
-                        row.addClass("table-danger")
+                        row.addClass("table-success")
+                        row.removeClass("table-danger")
+                        row.removeClass("table-warning")
                     }
                     else
                     {
                         row.find(".test-result-cell").html("Result invalid or missing");
                         row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
                     }
                 }
                 else
@@ -377,17 +389,23 @@ function testListAllApiCallback(result, code)
                     if(testResult === "true")
                     {
                         row.find(".test-result-cell").html("Vulnerable");
-                        row.addClass("table-danger")
+                        row.addClass("table-danger");
+                        row.removeClass("table-success")
+                        row.removeClass("table-warning")
                     }
                     else if(testResult === "false")
                     {
-                        row.find(".test-result-cell").html("Secure");
+                        console.log(row.find(".test-result-cell").html("Secure"))
                         row.addClass("table-success")
+                        row.removeClass("table-danger")
+                        row.removeClass("table-warning")
                     }
                     else
                     {
                         row.find(".test-result-cell").html("Result invalid or missing");
                         row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
                     }
                 }
                 if(testCaptureName != null)
