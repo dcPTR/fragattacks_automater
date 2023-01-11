@@ -24,6 +24,7 @@ def index():
 def list_lists():
     return render_template('list.html')
 
+
 @app.route("/list_all", methods=["GET"])
 def list_all():
     return render_template('list_all.html')
@@ -33,9 +34,11 @@ def list_all():
 def list_tests():
     return render_template('test.html')
 
+
 @app.route("/guide", methods=["GET"])
 def guide():
     return render_template('guide.html')
+
 
 def add_dev():
     global db
@@ -69,9 +72,9 @@ def get_device(device_name):
         for test in response_object["tests"]:
             # if test has 3 values, 3rd value should be name of the capture dump file
             # format: ["test name", "test status", <"dump file name">]
-            if len(test) >= 3: 
+            if len(test) >= 3:
                 if not os.path.exists(os.getcwd() + "/captures/" + test[2]):
-                    #if file can't be find on the server, don't send it to the user
+                    # if file can't be find on the server, don't send it to the user
                     test.pop(2)
     response_text = json.dumps(response_object)
 
@@ -85,55 +88,77 @@ def get_device(device_name):
 
     return response
 
+
 @app.route("/all_devices/", methods=["GET"])
 def get_all_devices():
     cursor = db.get_all_data()
+
+    all_dev = []
     output = {}
     for document in cursor:
         output = {key: value for key, value in document.items() if key != "_id"}
+        all_dev.append(output)
 
-    response_text = f"{output}".replace("'", '"')
-
-    response_object = json.loads(response_text)
-
-    print(response_object)
-    print(type(response_object))
-    for device in response_object:
-
-        print(type(device))
-        device_object = json.loads(device)
-        print(type(device_object))
-        if "tests" in device:
-            for test in device["tests"]:
-                # if test has 3 values, 3rd value should be name of the capture dump file
-                # format: ["test name", "test status", <"dump file name">]
-                if len(test) >= 3: 
-                    if not os.path.exists(os.getcwd() + "/captures/" + test[2]):
-                        #if file can't be find on the server, don't send it to the user
-                        test.pop(2)
-        device = json.dumps(device_object)
+    response_text = f"{all_dev}".replace("'", '"')
 
     response = app.response_class(
-        # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},
-        # "tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}',
         response=response_text,
         status=200,
         mimetype='application/json'
     )
 
+    # @app.route("/all_devices/", methods=["GET"])
+    # def get_all_devices():
+    #     cursor = db.get_all_data()
+    #     output = {}
+    #     for document in cursor:
+    #         output = {key: value for key, value in document.items() if key != "_id"}
+    #         print(output)
+    #
+    #     response_text = f"{output}".replace("'", '"')
+    #
+    #     response_object = json.loads(response_text)
+    #
+    #     print(response_object)
+    #     print(type(response_object))
+    #     for device in response_object:
+    #
+    #         print(type(device))
+    #         device_object = device
+    #         print(type(device_object))
+    #         print("Device: ", device_object)
+    #         if "tests" in device:
+    #             for test in device["tests"]:
+    #                 # if test has 3 values, 3rd value should be name of the capture dump file
+    #                 # format: ["test name", "test status", <"dump file name">]
+    #                 if len(test) >= 3:
+    #                     if not os.path.exists(os.getcwd() + "/captures/" + test[2]):
+    #                         # if file can't be find on the server, don't send it to the user
+    #                         test.pop(2)
+    #         device = json.dumps(device_object)
+    #
+    #     response = app.response_class(
+    #         # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},
+    #         # "tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}',
+    #         response=response_text,
+    #         status=200,
+    #         mimetype='application/json'
+    #     )
+
     return response
+
 
 # route for /captures/{device_name}
 @app.route("/captures/<file_name>", methods=["GET"])
 def get_capture_file(file_name):
     return send_from_directory(
-        os.getcwd()+"/captures", file_name, as_attachment=True
+        os.getcwd() + "/captures", file_name, as_attachment=True
     )
+
 
 @app.route("/devices/", methods=["GET"])
 def get_devices():
-    db = MongoDatabase()
-
+    global db
     cursor = db.get_all_data()
     devices = []
     for document in cursor:
@@ -212,8 +237,9 @@ def test_thread(request):
     js_concat = {**dev_json, **tests_json}
     print(js_concat)
     db.insert_data(js_concat)
-        # print("Test: ", test)
+    # print("Test: ", test)
     # print(tests)
+
 
 @app.route('/testing/', methods=["POST"])
 def tests():

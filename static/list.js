@@ -294,28 +294,30 @@ function testListAllApiCallback(result, code)
     {
     
         var testList = null
-        currentDeviceListObject.forEach(e => {
-            if(e.device.version === version)
-                {
-                    testList = e
-                }
-            }
-        )
+        // currentDeviceListObject.forEach(e => {
+        //     if(e.device.version === version)
+        //         {
+        //             testList = e
+        //         }
+        //     }
+        // )
 
         result.forEach(device =>
         {
+
+            console.log(device)
             deviceName = device.device.name
             deviceVersion = device.device.version
             testList = device.tests
-            
-            $(".test-row").remove();
+
+            //$(".test-row").remove();
 
             testRowTemplate = $(".test-row-template").clone();
             testRowTemplate.removeClass("test-row-template");
             testRowTemplate.removeClass("d-none");
             testRowTemplate.addClass("test-row");
 
-            testList.tests.forEach(element => {
+            testList.forEach(element => {
                 var row = testRowTemplate.clone();
                 var testName = element[0];
                 var testResult = element[1];
@@ -398,7 +400,7 @@ function testListAllApiCallback(result, code)
                 }
 
                 $("#device-test-table").append(row);
-            });        
+            });
         })
     $("#test-display-container").removeClass("d-none");       
     }
