@@ -3,7 +3,7 @@ import shutil
 
 def replace_conf_file(ssid, password):
     shutil.copyfile("client.conf", "client_copy.conf")
-    with open("client.conf", "w") as file:
+    with open("client.conf", "w+") as file:
         file.write("ctrl_interface=wpaspy_ctrl\n")
         file.write("sae_pwe=2\n")
         file.write("network={\n")

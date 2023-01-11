@@ -194,9 +194,11 @@ def interfaces():
     return output
 
 
-def test_thread(request):
+def test_thread(request_form):
+    print("Starting test thread")
+    print(request_form)
     global db
-    data = json.loads(next(iter(request.form)))
+    data = json.loads(request_form)
     request_data = data.get("request")
 
     name = request_data["name"]
@@ -243,8 +245,9 @@ def test_thread(request):
 
 @app.route('/testing/', methods=["POST"])
 def tests():
-    test_thread = threading.Thread(target=test_thread, args=(request), daemon=True)
-    test_thread.start()
+
+    thread = threading.Thread(target=test_thread, args=request.form, daemon=True)
+    thread.start()
 
     response = app.response_class(
         response='{"status":"success"}',
