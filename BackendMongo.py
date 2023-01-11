@@ -1,5 +1,6 @@
 import os
 import threading
+from time import sleep
 
 from flask import Flask, render_template, request, json, send_from_directory
 
@@ -219,8 +220,8 @@ def test_thread(request_form):
     dev = Device(name=name, description=description, software_version=version)
     dev_json = dev.get_json()
     results_container = []
-
     for test in tests:
+        print(test)
         test_group = test["name"]
         test_capture = test["capture"]
         # print("Test group: ", test_group)
@@ -245,7 +246,6 @@ def test_thread(request_form):
 
 @app.route('/testing/', methods=["POST"])
 def tests():
-
     thread = threading.Thread(target=test_thread, args=request.form, daemon=True)
     thread.start()
 
