@@ -152,7 +152,7 @@ def get_all_devices():
 @app.route("/captures/<file_name>", methods=["GET"])
 def get_capture_file(file_name):
     return send_from_directory(
-        os.getcwd() + "/captures", file_name, as_attachment=True
+        f"{os.getcwd()}/captures{file_name}", as_attachment=True
     )
 
 
