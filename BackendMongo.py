@@ -194,7 +194,7 @@ def interfaces():
     return output
 
 
-def test_thread(request_form):
+def test_thread_func(request_form):
     print("Starting test thread")
     print(request_form)
     global db
@@ -245,7 +245,7 @@ def test_thread(request_form):
 
 @app.route('/testing/', methods=["POST"])
 def tests():
-    thread = threading.Thread(target=test_thread, args=request.form, daemon=True)
+    thread = threading.Thread(target=test_thread_func, args=request.form, daemon=True)
     thread.start()
 
     response = app.response_class(
