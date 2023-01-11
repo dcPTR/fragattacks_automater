@@ -114,8 +114,9 @@ function displayTestList(version)
         row.find(".test-name-cell").html(name);
         row.find(".test-result-cell").html(testResult);
 
+        potantial_vuln_tests = ["ping-frag-sep","ping I,E --amsdu"]
         //these test don't looks for vulnerabilities
-        behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep", "ping-frag-sep --pn-per-qos"]
+        behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep --pn-per-qos"]
 
         if(behavior_tests.indexOf(name) > -1)
         {
@@ -131,7 +132,25 @@ function displayTestList(version)
             }
             else
             {
-                row.find(".test-result-cell").html("Result is missing");
+                row.find(".test-result-cell").html("Result invalid or missing");
+                row.addClass("table-warning")
+            }
+        }
+        if(potantial_vuln_tests.indexOf(name) > -1)
+        {
+            if(testResult === "true")
+            {
+                row.find(".test-result-cell").html("Potentially Vulnerable");
+                row.addClass("table-warning")
+            }
+            else if(testResult === "false")
+            {
+                row.find(".test-result-cell").html("Secure");
+                row.addClass("table-danger")
+            }
+            else
+            {
+                row.find(".test-result-cell").html("Result invalid or missing");
                 row.addClass("table-warning")
             }
         }
@@ -149,7 +168,7 @@ function displayTestList(version)
             }
             else
             {
-                row.find(".test-result-cell").html("Result is missing");
+                row.find(".test-result-cell").html("Result invalid or missing");
                 row.addClass("table-warning")
             }
         }
@@ -311,8 +330,9 @@ function testListAllApiCallback(result, code)
                 row.find(".test-name-cell").html(testName);
                 row.find(".test-result-cell").html(testResult);
 
+                potantial_vuln_tests = ["ping-frag-sep","ping I,E --amsdu"]
                 //these test don't looks for vulnerabilities
-                behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep", "ping-frag-sep --pn-per-qos"]
+                behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep --pn-per-qos"]
 
                 if(behavior_tests.indexOf(testName) > -1)
                 {
@@ -328,7 +348,25 @@ function testListAllApiCallback(result, code)
                     }
                     else
                     {
-                        row.find(".test-result-cell").html("Result is missing");
+                        row.find(".test-result-cell").html("Result invalid or missing");
+                        row.addClass("table-warning")
+                    }
+                }
+                if(potantial_vuln_tests.indexOf(testName) > -1)
+                {
+                    if(testResult === "true")
+                    {
+                        row.find(".test-result-cell").html("Potentially Vulnerable");
+                        row.addClass("table-warning")
+                    }
+                    else if(testResult === "false")
+                    {
+                        row.find(".test-result-cell").html("Secure");
+                        row.addClass("table-danger")
+                    }
+                    else
+                    {
+                        row.find(".test-result-cell").html("Result invalid or missing");
                         row.addClass("table-warning")
                     }
                 }
@@ -346,7 +384,7 @@ function testListAllApiCallback(result, code)
                     }
                     else
                     {
-                        row.find(".test-result-cell").html("Result is missing");
+                        row.find(".test-result-cell").html("Result invalid or missing");
                         row.addClass("table-warning")
                     }
                 }
