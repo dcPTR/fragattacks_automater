@@ -136,7 +136,7 @@ function displayTestList(version)
                 row.addClass("table-warning")
             }
         }
-        if(potantial_vuln_tests.indexOf(name) > -1)
+        else if(potantial_vuln_tests.indexOf(name) > -1)
         {
             if(testResult === "true")
             {
@@ -146,7 +146,7 @@ function displayTestList(version)
             else if(testResult === "false")
             {
                 row.find(".test-result-cell").html("Secure");
-                row.addClass("table-danger")
+                row.addClass("table-success")
             }
             else
             {
