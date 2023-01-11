@@ -25,7 +25,7 @@ class Automater:
         # initialize(capture=capture, interface=interface, group=group)
         self.tests_all = TestsFileImporter().get_test_results()
         self.tests = []
-        self.capture_name = str(uuid.uuid4().hex)
+
         for test in self.tests_all:
             if self.group_name is not None:
                 if test.type == self.group_name:
@@ -36,7 +36,7 @@ class Automater:
     def run(self):
         for test in self.tests:
             if self.should_capture:
-                test.set_capture_file(self.capture_name)
+                test.set_capture_file(str(uuid.uuid4().hex))
             print(test)
             if self.group_name is not None and test.type != self.group_name:
                 continue
@@ -77,7 +77,8 @@ class Automater:
         print(f"Starting attack {Fore.YELLOW}{test.name}{Style.RESET_ALL} ")
         file = ""
         if self.should_capture:
-            file = f"{self.research_dir}/captures/capture_{self.capture_name}.pcap"
+            print(f"Capturing packets to {Fore.YELLOW}{test.get_capture_file()}{Style.RESET_ALL}")
+            file = f"{self.research_dir}/captures/{test.get_capture_file()}.pcap"
             output = open(file, "w")
             capture = pyshark.LiveCapture(interface=self.interface, output_file=file)
             print(f"Starting capture on {Fore.YELLOW}{self.interface,}{Style.RESET_ALL}...")

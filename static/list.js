@@ -177,7 +177,7 @@ function displayTestList(version)
         
         if(testCaptureName != null)
         {
-            row.find(".test-download-link").attr("href", "/captures/" + testCaptureName);
+            row.find(".test-download-link").attr("href", "/captures/" + testCaptureName + ".pcap");
         }
         else
         {
@@ -410,7 +410,7 @@ function testListAllApiCallback(result, code)
                 }
                 if(testCaptureName != null)
                 {
-                    row.find(".test-download-link").attr("href", "/captures/" + testCaptureName);
+                    row.find(".test-download-link").attr("href", "/captures/" + testCaptureName + ".pcap");
                 }
                 else
                 {

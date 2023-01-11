@@ -74,14 +74,14 @@ def get_device(device_name):
             # if test has 3 values, 3rd value should be name of the capture dump file
             # format: ["test name", "test status", <"dump file name">]
             if len(test) >= 3:
-                if not os.path.exists(os.getcwd() + "/captures/" + test[2]):
+
+                if not os.path.exists(f"{os.getcwd()}/captures/{test[2]}.pcap"):
                     # if file can't be find on the server, don't send it to the user
+                    print("File not found")
                     test.pop(2)
     response_text = json.dumps(response_object)
 
     response = app.response_class(
-        # response='{"device":{"name":"Test Device","description":"Test Description","version":"1.23.486_test"},
-        # "tests":[["testsucccess","true"],["testfail","false"],["testunknown","null"]]}',
         response=response_text,
         status=200,
         mimetype='application/json'
