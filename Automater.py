@@ -39,6 +39,8 @@ class Automater:
             if self.group_name is not None and test.type != self.group_name:
                 continue
             self.automate(test)
+            if self.should_capture:
+                test.set_capture_file(self.capture_name)
             # self.results.add(test)
         print("TESTS")
         print(self.tests)
