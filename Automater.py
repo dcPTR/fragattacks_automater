@@ -4,6 +4,7 @@ import threading
 
 import pyshark as pyshark
 from colorama import Fore, Style
+import uuid
 
 from TestResult import TestResult
 from TestResultsContainer import TestResultsContainer
@@ -24,6 +25,7 @@ class Automater:
         # initialize(capture=capture, interface=interface, group=group)
         self.tests_all = TestsFileImporter().get_test_results()
         self.tests = []
+        self.capture_name = str(uuid.uuid4().hex)
         for test in self.tests_all:
             if self.group_name is not None:
                 if test.type == self.group_name:
@@ -72,7 +74,7 @@ class Automater:
         print(f"Starting attack {Fore.YELLOW}{test.name}{Style.RESET_ALL} ")
         file = ""
         if self.should_capture:
-            file = f"{self.research_dir}/captures/capture_{test}.pcap"
+            file = f"{self.research_dir}/captures/capture_{self.capture_name}.pcap"
             output = open(file, "w")
             capture = pyshark.LiveCapture(interface=self.interface, output_file=file)
             print(f"Starting capture on {Fore.YELLOW}{self.interface,}{Style.RESET_ALL}...")
