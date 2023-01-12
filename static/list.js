@@ -294,13 +294,6 @@ function testListAllApiCallback(result, code)
     {
     
         var testList = null
-        // currentDeviceListObject.forEach(e => {
-        //     if(e.device.version === version)
-        //         {
-        //             testList = e
-        //         }
-        //     }
-        // )
 
         result.forEach(device =>
         {
@@ -336,6 +329,7 @@ function testListAllApiCallback(result, code)
                 //these test don't looks for vulnerabilities
                 behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep --pn-per-qos"]
 
+
                 if(behavior_tests.indexOf(testName) > -1)
                 {
                     if(testResult === "true")
@@ -360,7 +354,7 @@ function testListAllApiCallback(result, code)
                         row.removeClass("table-danger")
                     }
                 }
-                if(potantial_vuln_tests.indexOf(testName) > -1)
+                else if(potantial_vuln_tests.indexOf(testName) > -1)
                 {
                     if(testResult === "true")
                     {

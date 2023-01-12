@@ -34,33 +34,36 @@
         <div id="frontpage-container" class="container">
             <h1>Instrukcja korzystania ze stanowiska dydaktycznego do ataków sieciowych klasy FragAttacks</h1>
             <ol>
-            <li>Włóż jeden z 2 dysków twardych leżących na biurku do jednostki centralnej oznaczonej naklejką z numerem 5 lub 6.</li>
-            <li>Podłącz 1 z leżących obok dysków kart sieciowych TP-Link i podłącz je do PC przez USB.</li>
-            <li>Włącz PC</li>
+            <li>Włóż jeden z dwóch dysków twardych leżących na biurku do jednostki centralnej oznaczonej naklejką z numerem 5 lub 6</li>
+            <li>Podłącz jeden z leżących obok dysków kart sieciowych TP-Link i podłącz je do PC przez USB.</li>
+            <li>Włącz PC.</li>
             <li>Zaloguj się na konto użytkownika FragAttacks bądź FragAttacks2 (w zależności czy to komputer 5 lub 6) z hasłem student.</li>
-            <li>Przejdź do folderu research w Eksploratorze plików, Home -> fragattacks -> research</li>
-            <li>Otwórz w dowolnym edytorze tekstowym plik client.conf i zmodyfikuj pola SSID oraz psk w ostatniej klamerce o nazwie "network" na końcu pliku. SSID to nazwa sieci Wi-Fi a psk to hasło do niej. Można przetestować np. własny telefon robiąc z niego hotspota i przepisując wyżej wymienione dane do pliku.</li>
-            <li>Ważne aby komputer nie był podłączony do tej samej sieci Wi-Fi wprowadzonej w pliku client.conf w trakcie testowania podatności. </li>
-            <li>Prawy przycisk myszy na pustą przestrzeń w folderze research i kliknij opcję "Open In Terminal"</li>
-            <li>Uruchom komendę "python3 BackendMongo.py"</li>
-            <li>W Terminalu powinna się pojawić linijka " * Running on http://127.0.0.1:5000 ". Kliknij w link prawym przyciskiem myszy i zaznacz opcję "Open Link" lub ręcznie wprowadzić ten link do paska dowolnej przeglądarki.</li>
+            <li>Przejdź do folderu research w Eksploratorze plików, Home -> fragattacks -> research.</li>
+            <li>Ważne aby komputer nie był podłączony do żadnej sieci Wi-Fi w trakcie testowania podatności, jeżeli jest to należy odłączyć. </li>
+            <li>Kliknij prawym przyciskiem myszy na pustą przestrzeń w folderze research i kliknij opcję "Open In Terminal" </li>
+            <li>Uruchom komendę "python3 BackendMongo.py""</li>
+            <li>W Terminalu powinna się pojawić linijka "* Running on <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>". Kliknij w link prawym przyciskiem myszy i zaznacz opcję "Open Link" lub ręcznie wprowadzić ten link do paska dowolnej przeglądarki.</li>
             
-            <li>Pokaże się strona startowa aplikacji, z 4 przyciskami do pozostałych stron aplikacji:
+            <li>Pokaże się strona startowa aplikacji, z przyciskami do pozostałych stron:
             
                 <ul>
-                <li>"Main Page" - strona startowa opisująca FragAttacks</li>
+                <li>"Main Page" – strona zawierająca opis o FragAttacks oraz sposobach ochrony przed nimi.</li>
                 
                     <img src="/static/guide/Main_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
                 
-                <li>"Perform Tests" - strona z której uruchamia się testy i są one ładowane do bazy danych AWS po zakończeniu testów. uzupełniać pola zgodnie z tym co nazwa wskazuje</li>
+                <li>"Perform Tests" - strona z której uruchamia się testy, po zakończeniu testów wyniki są przesyłane  do bazy danych MongoDB. Uzupełniać pola zgodnie z tym co nazwa wskazuje, po wprowadzeniu wszystkich danych zatwierdzić testy klikając przycisk "Submit tests".</li>
                 
                     <img src="/static/guide/Perform_Tests_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
                 
-                <li>"Test results" - strona na której można odczytać wyniki testów, trzeba wprowadzić nazwę badanego urządzenia które zostało wpisane w stronie "Perform Tests"</li>
+                <li>"Test Results" - strona na której można odczytać wyniki testów, trzeba wprowadzić nazwę badanego urządzenia oraz wybrać wersję oprogramowania.</li>
                 
                     <img src="/static/guide/Test_Results_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
+
+                <li>"Full Test List" – strona na której można odczytać wyniki wszystkich testów znajdujących się aktualnie w bazie danych.</li>
                 
-                <li>"Tutorial" - niniejsza strona zawierająca instrukcję jak korzystać ze stanowiska dydaktycznego do FragAttacks</li>
+                    <img src="/static/guide/Test_Results_All_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
+                
+                <li>"Tutorial" - strona zawierająca instrukcję jak korzystać ze stanowiska dydaktycznego do FragAttacks.</li>
 
                 </ul>
             </li>

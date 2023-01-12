@@ -150,7 +150,6 @@ def get_devices():
         output += f'"{device["device"]["name"]}",'
     output = output[:-1]
     output += ']}'
-    print("Output: " + output)
 
     response_text = f"{output}".replace("'", '"')
     print("Response text: " + response_text)
@@ -177,7 +176,6 @@ def interfaces():
 
 def test_thread_func(request_form):
     print("Starting test thread")
-    print(request_form)
     global db
     data = json.loads(request_form)
     request_data = data.get("request")
