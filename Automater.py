@@ -10,11 +10,6 @@ from TestResult import TestResult
 from TestResultsContainer import TestResultsContainer
 from TestsFileImporter import TestsFileImporter
 
-
-# research_dir = os.getcwd()
-# iface = "wlp0s20f3"
-# should_capture = True
-
 class Automater:
     def __init__(self, capture=None, interface=None, group=None):
         self.should_capture = capture
@@ -22,7 +17,6 @@ class Automater:
         self.capture = capture
         self.interface = interface
         self.group_name = group
-        # initialize(capture=capture, interface=interface, group=group)
         self.tests_all = TestsFileImporter().get_test_results()
         self.tests = []
 
@@ -42,7 +36,6 @@ class Automater:
                 continue
             self.automate(test)
 
-            # self.results.add(test)
         print("TESTS")
         print(self.tests)
         print(f"{Fore.GREEN}Successful tests:")
@@ -61,7 +54,6 @@ class Automater:
 
     def attack(self, test: TestResult, interface="wlp0s20f3"):
         command = f"{self.research_dir}/fragattack.py {interface} {test.name}"
-        # os.system(command)
         log = os.popen(command).read()
         if ">>> TEST COMPLETED SUCCESSFULLY" in log:
             test.set_result(True)
@@ -70,7 +62,6 @@ class Automater:
 
     def sniff(self, capture):
         # for raw_packet in capture.sniff_continuously():
-        #     print(raw_packet)
         capture.sniff(timeout=20)
 
     def automate(self, test: TestResult):
@@ -120,34 +111,3 @@ class Automater:
             self.interface = interface
         if group is not None:
             self.group_name = group
-
-# if __name__ == '__main__':
-#     initialize()
-#     if not group_name:
-#         group_name = "sanity_checks"
-#     trc = TestResultsContainer(TestsFileImporter().get_test_results())
-#
-#     if group_name:
-#         tests = trc.get_test_results_from_group(group_name)
-#         print(f"Running {len(tests)} tests from group {group_name}")
-#     else:
-#         tests = trc.get_all_test_results()
-#         print(f"Running {len(tests)} tests")
-#
-#     print("Tests: ")
-#     for test in tests:
-#         automate(test, interface=iface)
-#
-#     print(f"\n{Fore.CYAN}All tests finished")
-#     print("********\n" * 3)
-#     print(f"{Fore.GREEN}Successful tests:")
-#
-#     maxLength = max([len(test.name) for test in tests])
-#     for test in tests:
-#         if test.result:
-#             print(f"{Fore.GREEN}{test.name}:{' ' * (maxLength + 1 - len(test.name))}{test.result}{Style.RESET_ALL}")
-#
-#     print(f"\n{Fore.RED}Failed tests:")
-#     for test in tests:
-#         if not test.result:
-#             print(f"{Fore.RED}{test.name}:{' ' * (maxLength + 1 - len(test.name))}{test.result}{Style.RESET_ALL}")
