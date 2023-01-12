@@ -61,7 +61,6 @@ class Automater:
         return False
 
     def sniff(self, capture):
-        # for raw_packet in capture.sniff_continuously():
         capture.sniff(timeout=20)
 
     def automate(self, test: TestResult):
