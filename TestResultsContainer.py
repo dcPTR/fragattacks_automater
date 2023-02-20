@@ -4,7 +4,7 @@ from TestResult import TestResult
 
 
 class TestResultsContainer:
-    def __init__(self, test_results: list[TestResult]):
+    def __init__(self, test_results: """list[TestResult]"""):
         self.test_results = test_results
         self.sanity_checks = []
         self.basic_device_behaviour = []
@@ -121,5 +121,12 @@ class TestResultsContainer:
     def get_json(self):
         json = {"tests": []}
         for test_result in self.test_results:
-            json["tests"].append([test_result.get_name(), str(test_result.get_result()).lower()])
+            if test_result.get_capture_file() is not None:
+                json["tests"].append([test_result.get_name(),
+                                      str(test_result.get_result()).lower(),
+                                      test_result.get_capture_file()])
+            else:
+                json["tests"].append([test_result.get_name(),
+                                      str(test_result.get_result()).lower()])
+
         return json

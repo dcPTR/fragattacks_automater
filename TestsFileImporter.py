@@ -32,8 +32,3 @@ class TestsFileImporter:
 
     def get_test_names(self):
         return self.test_names
-
-# trc = TestResultsContainer(TestsFileImporter().get_test_results())
-# tests = trc.get_test_results_from_group("mixed_key_attacks")
-# for test in tests:
-#     print(test)

@@ -105,21 +105,85 @@ function displayTestList(version)
         var row = testRowTemplate.clone();
         var name = element[0];
         var testResult = element[1];
+        var testCaptureName = null
+        if(element.length > 2)
+        {
+            testCaptureName = element[2]
+        }
 
         row.find(".test-name-cell").html(name);
         row.find(".test-result-cell").html(testResult);
-        if(testResult === "true")
+
+        potantial_vuln_tests = ["ping-frag-sep","ping I,E --amsdu"]
+        //these test don't looks for vulnerabilities
+        behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep --pn-per-qos"]
+
+        if(behavior_tests.indexOf(name) > -1)
         {
-            row.addClass("table-success")
+            if(testResult === "true")
+            {
+                row.find(".test-result-cell").html("Test Successful");
+                row.addClass("table-success")
+            }
+            else if(testResult === "false")
+            {
+                row.find(".test-result-cell").html("Not supported");
+                row.addClass("table-danger")
+            }
+            else
+            {
+                row.find(".test-result-cell").html("Result invalid or missing");
+                row.addClass("table-warning")
+            }
         }
-        else if(testResult === "false")
+        else if(potantial_vuln_tests.indexOf(name) > -1)
         {
-            row.addClass("table-danger")
+            if(testResult === "true")
+            {
+                row.find(".test-result-cell").html("Potentially Vulnerable");
+                row.addClass("table-warning")
+            }
+            else if(testResult === "false")
+            {
+                row.find(".test-result-cell").html("Secure");
+                row.addClass("table-success")
+            }
+            else
+            {
+                row.find(".test-result-cell").html("Result invalid or missing");
+                row.addClass("table-warning")
+            }
         }
         else
         {
-            row.addClass("table-warning")
+            if(testResult === "true")
+            {
+                row.find(".test-result-cell").html("Vulnerable");
+                row.addClass("table-danger")
+            }
+            else if(testResult === "false")
+            {
+                row.find(".test-result-cell").html("Secure");
+                row.addClass("table-success")
+            }
+            else
+            {
+                row.find(".test-result-cell").html("Result invalid or missing");
+                row.addClass("table-warning")
+            }
         }
+
+
+        
+        if(testCaptureName != null)
+        {
+            row.find(".test-download-link").attr("href", "/captures/" + testCaptureName + ".pcap");
+        }
+        else
+        {
+            row.find(".test-download-link").html("");
+        }
+
         $("#device-test-table").append(row);
     });
 
@@ -130,7 +194,15 @@ function testListApiCallback(result, code)
 {
     if(code === "success")
     {
-        currentDeviceListObject = result;
+        if(typeof result[Symbol.iterator] === 'function')
+        {
+            currentDeviceListObject = result
+        }
+        else
+        {
+            currentDeviceListObject = new Array()
+            currentDeviceListObject.push(result);
+        }
         findtestVersions()
         $("#test-version-form-container").removeClass("d-none")
     }
@@ -193,6 +265,7 @@ function submitDeviceTestSearch(event)
 
 function findDeviceAutocompleteListCallback(result, code)
 {
+    //result = JSON.stringify(result);
     if(code === "success")
     {
         try{
@@ -215,6 +288,147 @@ function findDeviceAutocompleteListCallback(result, code)
     }
 }
 
+function testListAllApiCallback(result, code)
+{
+    if(code === "success")
+    {
+    
+        var testList = null
+
+        result.forEach(device =>
+        {
+
+            console.log(device)
+            deviceName = device.device.name
+            deviceVersion = device.device.version
+            testList = device.tests
+
+            //$(".test-row").remove();
+
+            testRowTemplate = $(".test-row-template").clone();
+            testRowTemplate.removeClass("test-row-template");
+            testRowTemplate.removeClass("d-none");
+            testRowTemplate.addClass("test-row");
+
+            testList.forEach(element => {
+                var row = testRowTemplate.clone();
+                var testName = element[0];
+                var testResult = element[1];
+                var testCaptureName = null
+                if(element.length > 2)
+                {
+                    testCaptureName = element[2]
+                }
+
+                row.find(".device-name-cell").html(deviceName);
+                row.find(".device-version-cell").html(deviceVersion);
+                row.find(".test-name-cell").html(testName);
+                row.find(".test-result-cell").html(testResult);
+
+                potantial_vuln_tests = ["ping-frag-sep","ping I,E --amsdu"]
+                //these test don't looks for vulnerabilities
+                behavior_tests = ["ping", "ping I,E,E", "ping I,E,E --delay 1", "ping-frag-sep --pn-per-qos"]
+
+
+                if(behavior_tests.indexOf(testName) > -1)
+                {
+                    if(testResult === "true")
+                    {
+                        row.find(".test-result-cell").html("Test Successful");
+                        row.addClass("table-success")
+                        row.removeClass("table-danger")
+                        row.removeClass("table-warning")
+                    }
+                    else if(testResult === "false")
+                    {
+                        row.find(".test-result-cell").html("Not supported");
+                        row.addClass("table-danger");
+                        row.removeClass("table-success")
+                        row.removeClass("table-warning")
+                    }
+                    else
+                    {
+                        row.find(".test-result-cell").html("Result invalid or missing");
+                        row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
+                    }
+                }
+                else if(potantial_vuln_tests.indexOf(testName) > -1)
+                {
+                    if(testResult === "true")
+                    {
+                        row.find(".test-result-cell").html("Potentially Vulnerable");
+                        row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
+                    }
+                    else if(testResult === "false")
+                    {
+                        row.find(".test-result-cell").html("Secure");
+                        row.addClass("table-success")
+                        row.removeClass("table-danger")
+                        row.removeClass("table-warning")
+                    }
+                    else
+                    {
+                        row.find(".test-result-cell").html("Result invalid or missing");
+                        row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
+                    }
+                }
+                else
+                {
+                    if(testResult === "true")
+                    {
+                        row.find(".test-result-cell").html("Vulnerable");
+                        row.addClass("table-danger");
+                        row.removeClass("table-success")
+                        row.removeClass("table-warning")
+                    }
+                    else if(testResult === "false")
+                    {
+                        console.log(row.find(".test-result-cell").html("Secure"))
+                        row.addClass("table-success")
+                        row.removeClass("table-danger")
+                        row.removeClass("table-warning")
+                    }
+                    else
+                    {
+                        row.find(".test-result-cell").html("Result invalid or missing");
+                        row.addClass("table-warning")
+                        row.removeClass("table-success")
+                        row.removeClass("table-danger")
+                    }
+                }
+                if(testCaptureName != null)
+                {
+                    row.find(".test-download-link").attr("href", "/captures/" + testCaptureName + ".pcap");
+                }
+                else
+                {
+                    row.find(".test-download-link").html("");
+                }
+
+                $("#device-test-table").append(row);
+            });
+        })
+    $("#test-display-container").removeClass("d-none");       
+    }
+}
+
+function displayAllTestResults()
+{
+    const apiurl = "/all_devices/";
+
+    $.ajax({
+        url:apiurl,
+        dataType:"json",
+        success:testListAllApiCallback
+    })
+}
+
 function findDeviceAutocompleteList()
 {
     const deviceListURL = "/devices/" //fill with proper url
@@ -234,7 +448,14 @@ function findDeviceAutocompleteList()
 }
 
 $(window).on('load', function(event) {
-    $("#search-button").on("click", submitDeviceTestSearch)
-    $("#search-version-button").on("click", submitTestSearch)
-    findDeviceAutocompleteList()
+    if(window.location.pathname === "/list")
+    {
+        $("#search-button").on("click", submitDeviceTestSearch)
+        $("#search-version-button").on("click", submitTestSearch)
+        findDeviceAutocompleteList()
+    }
+    if(window.location.pathname === "/list_all")
+    {
+        displayAllTestResults();
+    }
    });

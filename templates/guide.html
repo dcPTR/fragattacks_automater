@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+    <script src="/static/test.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="header" class="container">
+            <h1>FragTester</h1>
+            <h2>
+                <a href="/" class="btn btn-primary">
+                        Main Page
+                </a>
+                <a href="/test" class="btn btn-info">
+                    Perform Tests
+                </a>
+                <a href="/list" class="btn btn-info">
+                        Test Results
+                </a>
+                <a href="/list_all" class="btn btn-info">
+                    Full Test List
+                </a>
+                <a href="/guide" class="btn btn-info">
+                    Tutorial
+                </a>
+            </h2>
+        </div>
+        <hr>
+        <div id="frontpage-container" class="container">
+            <h1>Instrukcja korzystania ze stanowiska dydaktycznego do ataków sieciowych klasy FragAttacks</h1>
+            <ol>
+            <li>Włóż jeden z dwóch dysków twardych leżących na biurku do jednostki centralnej oznaczonej naklejką z numerem 5 lub 6</li>
+            <li>Podłącz jeden z leżących obok dysków kart sieciowych TP-Link i podłącz je do PC przez USB.</li>
+            <li>Włącz PC.</li>
+            <li>Zaloguj się na konto użytkownika FragAttacks bądź FragAttacks2 (w zależności czy to komputer 5 lub 6) z hasłem student.</li>
+            <li>Przejdź do folderu research w Eksploratorze plików, Home -> fragattacks -> research.</li>
+            <li>Ważne aby komputer nie był podłączony do żadnej sieci Wi-Fi w trakcie testowania podatności, jeżeli jest to należy odłączyć. </li>
+            <li>Kliknij prawym przyciskiem myszy na pustą przestrzeń w folderze research i kliknij opcję "Open In Terminal" </li>
+            <li>Uruchom komendę "python3 BackendMongo.py""</li>
+            <li>W Terminalu powinna się pojawić linijka "* Running on <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>". Kliknij w link prawym przyciskiem myszy i zaznacz opcję "Open Link" lub ręcznie wprowadzić ten link do paska dowolnej przeglądarki.</li>
+            
+            <li>Pokaże się strona startowa aplikacji, z przyciskami do pozostałych stron:
+            
+                <ul>
+                <li>"Main Page" – strona zawierająca opis o FragAttacks oraz sposobach ochrony przed nimi.</li>
+                
+                    <img src="/static/guide/Main_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
+                
+                <li>"Perform Tests" - strona z której uruchamia się testy, po zakończeniu testów wyniki są przesyłane  do bazy danych MongoDB. Uzupełniać pola zgodnie z tym co nazwa wskazuje, po wprowadzeniu wszystkich danych zatwierdzić testy klikając przycisk "Submit tests".</li>
+                
+                    <img src="/static/guide/Perform_Tests_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
+                
+                <li>"Test Results" - strona na której można odczytać wyniki testów, trzeba wprowadzić nazwę badanego urządzenia oraz wybrać wersję oprogramowania.</li>
+                
+                    <img src="/static/guide/Test_Results_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
+
+                <li>"Full Test List" – strona na której można odczytać wyniki wszystkich testów znajdujących się aktualnie w bazie danych.</li>
+                
+                    <img src="/static/guide/Test_Results_All_Page.png" alt="Obrazek strony głównej" class="mt-1 mb-3" style="max-height: 50vh;">
+                
+                <li>"Tutorial" - strona zawierająca instrukcję jak korzystać ze stanowiska dydaktycznego do FragAttacks.</li>
+
+                </ul>
+            </li>
+            
+            </ol>
+            
+            
+            
+        </div>
+    </div>
+</body>

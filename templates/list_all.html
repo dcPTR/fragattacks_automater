@@ -32,51 +32,9 @@
             </h2>
         </div>
         <hr>
-        <div id="test-form-container" class="container">
-            <form id="test-submission-form" class="form-horizontal">
-                <div class="form-group row">
-                    <label for="device-name" class="col-sm-2 control-label">
-                        Device Name:
-                        <span class="input-group-addon" id="device-list-loading">
-                            <img src="/static/loading.gif" width="20" height="20" alt="Device list is loading"/>
-                        </span>
-                    </label>
-                    <div class="controls col-sm-4">
-                        <input id="device-name" class="form-control">
-                    </div>
-                    </div>
-                </div>
-                <button id="search-button" class="btn btn-primary" action="event.preventDefault()">
-                    Search Device
-                </button>
-            </form>
-        </div>
-        <div id="test-device-error-container" class="container d-none error-div">
-            <div id="error-device-div" class="alert alert-danger" role="alert">
-                Device error placeholder text
-            </div>
-        </div>
-        <div id="test-version-form-container" class="container d-none">
-            <form id="test-version-submission-form" class="form-horizontal">
-                <div class="form-group row">
-                    <label for="device-version" class="col-sm-2 control-label">Version:</label>
-                    <div class="controls col-sm-4">
-                        <select id="device-version" class="form-control">
-                        </select>
-                    </div>
-                </div>
-                <button id="search-version-button" class="btn btn-primary" action="event.preventDefault()">
-                    Search Version
-                </button>
-            </form>
-        </div>
-        <div id="test-version-error-container" class="container d-none error-div">
-            <div id="error-version-div" class="alert alert-danger" role="alert">
-                Version error placeholder text
-            </div>
-        </div>
         <div id="test-display-container" class="d-none container">
             <hr>
+            <!--
             <div id="device-information-container" class="container">
                 <table id="device-information-table" class="table">
                     <tr>
@@ -100,12 +58,26 @@
                     </tr>
                 </table>
             </div>
+            -->
             <div id="device-test-container" class="container">
                 <table id="device-test-table" class="table">
                     <tr>
                         <th id="device-name" colspan="3"><h3>Test Results:</h3></th>
                     </tr>
+                    <tr>
+                        <th>Device Name</th>
+                        <th>Device Version</th>
+                        <th>Test Name</th>
+                        <th>Test Result</th>
+                        <th>Capture Download</th>
+                    </tr>
                     <tr class="d-none test-row-template">
+                        <th class="device-name-cell">
+                            (Device name placeholder)
+                        </th>
+                        <th class="device-version-cell">
+                            (Device version placeholder)
+                        </th>
                         <th class="test-name-cell">
                             (Test name placeholder)
                         </th>

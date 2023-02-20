@@ -39,7 +39,6 @@ class DatabaseResultContainer:
             if i != len(self.tests_names_and_results) - 1:
                 tests += ","
         return f'"tests":[{tests}]'
-        # return "Test id: " + str(self.test_id) + ", devices ids: " + str(self.devices_ids) + ", test results: " + str(self.test_results)
 
 
 if __name__ == '__main__':
